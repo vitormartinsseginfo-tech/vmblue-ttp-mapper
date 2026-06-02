@@ -144,7 +144,7 @@ body::before {
 .badge-mal { background: rgba(239,68,68,0.2); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
 .actor-name { font-family: 'Barlow Condensed', sans-serif; font-size: 42px; font-weight: 800; color: var(--txt); letter-spacing: 1px; text-transform: uppercase; line-height: 1; margin-bottom: 8px; }
 .actor-aliases { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); margin-bottom: 12px; }
-.actor-desc { font-size: 13px; color: var(--txt); opacity: 0.8; line-height: 1.7; max-width: 700px; }
+.actor-desc { font-size: 13px; color: var(--txt); opacity: 0.8; line-height: 1.7; max-width: 700px; word-wrap: break-word; overflow-wrap: break-word; }
 .actor-stats { display: flex; flex-direction: column; gap: 12px; min-width: 160px; }
 .stat-box { background: var(--s2); border: 1px solid var(--bd); border-radius: 6px; padding: 14px 18px; text-align: center; }
 .stat-num { font-family: 'Barlow Condensed', sans-serif; font-size: 36px; font-weight: 800; color: var(--blue-bright); line-height: 1; margin-bottom: 4px; }
@@ -176,25 +176,25 @@ body::before {
 .tactic-risk-pill { font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 3px 10px; border-radius: 99px; font-weight: 600; }
 .tactic-chevron { color: var(--muted); transition: transform 0.2s; }
 .tactic-section.collapsed .tactic-chevron { transform: rotate(-90deg); }
-.tactic-body { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 1px; background: var(--bd); }
+.tactic-body { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1px; background: var(--bd); overflow: hidden; }
 .tactic-section.collapsed .tactic-body { display: none; }
 
 /* ── TECH CARD ── */
-.tech-card { background: var(--s1); padding: 16px 20px; transition: background 0.1s; }
+.tech-card { background: var(--s1); padding: 16px 20px; transition: background 0.1s; overflow: hidden; min-width: 0; }
 .tech-card:hover { background: var(--s2); }
 .tech-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
 .tech-id { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--blue-bright); flex-shrink: 0; background: var(--blue-glow); padding: 2px 8px; border-radius: 3px; border: 1px solid rgba(37,99,235,0.2); }
-.tech-name { font-size: 13px; font-weight: 600; color: var(--txt); margin-bottom: 6px; line-height: 1.3; }
-.tech-desc { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 10px; }
-.tech-use { background: var(--s3); border-left: 2px solid var(--blue); padding: 8px 12px; font-size: 11px; color: var(--txt); opacity: 0.85; line-height: 1.5; border-radius: 0 3px 3px 0; margin-bottom: 10px; }
+.tech-name { font-size: 13px; font-weight: 600; color: var(--txt); margin-bottom: 6px; line-height: 1.3; word-wrap: break-word; overflow-wrap: break-word; }
+.tech-desc { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 10px; word-wrap: break-word; overflow-wrap: break-word; }
+.tech-use { background: var(--s3); border-left: 2px solid var(--blue); padding: 8px 12px; font-size: 11px; color: var(--txt); opacity: 0.85; line-height: 1.5; border-radius: 0 3px 3px 0; margin-bottom: 10px; word-wrap: break-word; overflow-wrap: break-word; }
 .tech-use-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--blue-bright); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
 .mitigations-toggle { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--green); cursor: pointer; background: none; border: none; padding: 0; display: flex; align-items: center; gap: 5px; }
 .mitigations-toggle:hover { opacity: 0.7; }
 .mitigations-body { display: none; margin-top: 10px; border-top: 1px solid var(--bd); padding-top: 10px; }
 .mitigations-body.open { display: block; }
 .mitigation-item { background: rgba(16,185,129,0.05); border: 1px solid rgba(16,185,129,0.15); border-radius: 4px; padding: 8px 12px; margin-bottom: 6px; }
-.mit-name { font-size: 12px; font-weight: 600; color: var(--green); margin-bottom: 4px; }
-.mit-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
+.mit-name { font-size: 12px; font-weight: 600; color: var(--green); margin-bottom: 4px; word-wrap: break-word; }
+.mit-desc { font-size: 11px; color: var(--muted); line-height: 1.5; word-wrap: break-word; overflow-wrap: break-word; }
 
 /* ── ERROR ── */
 .error-box { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); border-radius: 6px; padding: 20px 24px; margin: 20px 0; font-size: 13px; color: var(--red); display: none; }
@@ -569,14 +569,14 @@ function renderResults(data){
 function scrollToTactic(slug){
   const el = document.getElementById('tactic-'+slug)
   if(!el) return
-  // Expande primeiro
   el.classList.remove('collapsed')
-  // Aguarda o DOM atualizar antes de scrollar
-  setTimeout(() => {
-    const offset = 70 // altura do nav fixo
-    const top = el.getBoundingClientRect().top + window.pageYOffset - offset
-    window.scrollTo({ top, behavior: 'smooth' })
-  }, 50)
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      const rect = el.getBoundingClientRect()
+      const scrollTop = window.pageYOffset + rect.top - 70
+      window.scrollTo({ top: scrollTop, behavior: 'smooth' })
+    })
+  })
 }
 
 function showLoading(text){
