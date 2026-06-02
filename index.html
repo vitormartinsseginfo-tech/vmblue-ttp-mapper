@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark" data-lang="pt">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VMBLUE — TTP Mapper</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* ── RESET & VARS ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
+
+/* ── DARK THEME (padrão) ── */
+[data-theme="dark"] {
   --blue: #2563EB;
   --blue-bright: #3B82F6;
   --blue-glow: rgba(37,99,235,0.15);
@@ -20,12 +21,33 @@
   --bd: #1E3050;
   --txt: #E2EAF4;
   --muted: #4A6A8A;
-  --dim: #2A4060;
   --amber: #F59E0B;
   --green: #10B981;
   --red: #EF4444;
-  --radius: 6px;
+  --nav-bg: rgba(6,11,20,0.95);
+  --grid-color: rgba(37,99,235,0.03);
 }
+
+/* ── LIGHT THEME ── */
+[data-theme="light"] {
+  --blue: #2563EB;
+  --blue-bright: #1D4ED8;
+  --blue-glow: rgba(37,99,235,0.08);
+  --blue-dark: #1E40AF;
+  --bg: #F0F4F8;
+  --s1: #FFFFFF;
+  --s2: #F8FAFC;
+  --s3: #EFF6FF;
+  --bd: #CBD5E1;
+  --txt: #0F172A;
+  --muted: #64748B;
+  --amber: #D97706;
+  --green: #059669;
+  --red: #DC2626;
+  --nav-bg: rgba(240,244,248,0.95);
+  --grid-color: rgba(37,99,235,0.04);
+}
+
 html, body { height: 100%; }
 body {
   background: var(--bg);
@@ -34,16 +56,15 @@ body {
   font-size: 14px;
   line-height: 1.6;
   overflow-x: hidden;
+  transition: background 0.3s, color 0.3s;
 }
-
-/* ── GRID BG ── */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   background-image:
-    linear-gradient(rgba(37,99,235,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(37,99,235,0.03) 1px, transparent 1px);
+    linear-gradient(var(--grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
   background-size: 40px 40px;
   pointer-events: none;
   z-index: 0;
@@ -54,7 +75,7 @@ body::before {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 100;
-  background: rgba(6,11,20,0.9);
+  background: var(--nav-bg);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--bd);
   padding: 0 32px;
@@ -63,575 +84,133 @@ body::before {
   align-items: center;
   justify-content: space-between;
 }
-.nav-brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.nav-logo {
-  width: 32px;
-  height: 32px;
-  background: var(--blue);
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 800;
-  font-size: 14px;
-  color: #fff;
-  letter-spacing: 1px;
-}
-.nav-name {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 18px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  color: var(--txt);
-}
-.nav-sub {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  color: var(--muted);
-  letter-spacing: 2px;
-  margin-left: 4px;
-}
-.nav-tag {
+.nav-brand { display: flex; align-items: center; gap: 10px; }
+.nav-logo { width: 32px; height: 32px; background: var(--blue); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 14px; color: #fff; letter-spacing: 1px; }
+.nav-name { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: 2px; color: var(--txt); }
+.nav-sub { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 2px; margin-left: 4px; }
+.nav-actions { display: flex; align-items: center; gap: 8px; }
+.nav-toggle {
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
-  color: var(--blue-bright);
-  letter-spacing: 2px;
-  padding: 3px 10px;
-  border: 1px solid var(--bd);
+  padding: 5px 12px;
   border-radius: 99px;
-  background: var(--blue-glow);
-}
-
-/* ── MAIN ── */
-.main {
-  position: relative;
-  z-index: 1;
-  padding-top: 56px;
-  min-height: 100vh;
-}
-
-/* ── HERO ── */
-.hero {
-  padding: 80px 32px 48px;
-  max-width: 800px;
-  margin: 0 auto;
-  text-align: center;
-}
-.hero-eyebrow {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--blue-bright);
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  margin-bottom: 16px;
-}
-.hero-title {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 64px;
-  font-weight: 800;
-  color: var(--txt);
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  line-height: 0.95;
-  margin-bottom: 16px;
-}
-.hero-title span { color: var(--blue-bright); }
-.hero-desc {
-  font-size: 15px;
-  color: var(--muted);
-  line-height: 1.7;
-  max-width: 560px;
-  margin: 0 auto 40px;
-}
-
-/* ── SEARCH ── */
-.search-wrap {
-  position: relative;
-  max-width: 600px;
-  margin: 0 auto;
-}
-.search-input {
-  width: 100%;
+  border: 1px solid var(--bd);
   background: var(--s1);
-  border: 1px solid var(--bd);
-  border-radius: var(--radius);
-  color: var(--txt);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 16px;
-  padding: 14px 52px 14px 20px;
-  outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-.search-input:focus {
-  border-color: var(--blue);
-  box-shadow: 0 0 0 3px var(--blue-glow);
-}
-.search-input::placeholder { color: var(--muted); }
-.search-btn {
-  position: absolute;
-  right: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: var(--blue);
-  border: none;
-  border-radius: 4px;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background 0.15s;
-  color: #fff;
-}
-.search-btn:hover { background: var(--blue-dark); }
-.search-btn svg { pointer-events: none; }
-
-/* ── SUGGESTIONS ── */
-.suggestions {
-  position: absolute;
-  top: calc(100% + 6px);
-  left: 0; right: 0;
-  background: var(--s2);
-  border: 1px solid var(--bd);
-  border-radius: var(--radius);
-  overflow: hidden;
-  z-index: 50;
-  display: none;
-}
-.suggestions.open { display: block; }
-.suggestion-item {
-  padding: 12px 16px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  border-bottom: 1px solid var(--bd);
-  transition: background 0.1s;
-}
-.suggestion-item:last-child { border-bottom: none; }
-.suggestion-item:hover { background: var(--s3); }
-.sug-type {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  padding: 2px 8px;
-  border-radius: 3px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  flex-shrink: 0;
-}
-.type-intrusion-set { background: rgba(37,99,235,0.2); color: var(--blue-bright); border: 1px solid rgba(37,99,235,0.3); }
-.type-malware { background: rgba(239,68,68,0.2); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
-.type-tool { background: rgba(245,158,11,0.2); color: var(--amber); border: 1px solid rgba(245,158,11,0.3); }
-.sug-info { flex: 1; min-width: 0; }
-.sug-name { font-size: 13px; font-weight: 500; color: var(--txt); }
-.sug-id { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); }
-
-/* ── EXAMPLES ── */
-.examples {
-  display: flex;
-  gap: 8px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 16px;
-}
-.example-btn {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  padding: 5px 14px;
-  border-radius: 99px;
-  border: 1px solid var(--bd);
-  background: transparent;
   color: var(--muted);
   cursor: pointer;
   transition: all 0.15s;
+  letter-spacing: 1px;
 }
+.nav-toggle:hover, .nav-toggle.active { border-color: var(--blue); color: var(--blue-bright); background: var(--blue-glow); }
+.nav-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--blue-bright); letter-spacing: 2px; padding: 3px 10px; border: 1px solid var(--bd); border-radius: 99px; background: var(--blue-glow); }
+
+/* ── MAIN ── */
+.main { position: relative; z-index: 1; padding-top: 56px; min-height: 100vh; }
+
+/* ── HERO ── */
+.hero { padding: 80px 32px 48px; max-width: 800px; margin: 0 auto; text-align: center; }
+.hero-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--blue-bright); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 16px; }
+.hero-title { font-family: 'Barlow Condensed', sans-serif; font-size: 64px; font-weight: 800; color: var(--txt); letter-spacing: 2px; text-transform: uppercase; line-height: 0.95; margin-bottom: 16px; }
+.hero-title span { color: var(--blue-bright); }
+.hero-desc { font-size: 15px; color: var(--muted); line-height: 1.7; max-width: 560px; margin: 0 auto 40px; }
+
+/* ── SEARCH ── */
+.search-wrap { position: relative; max-width: 600px; margin: 0 auto; }
+.search-input { width: 100%; background: var(--s1); border: 1px solid var(--bd); border-radius: 6px; color: var(--txt); font-family: 'DM Sans', sans-serif; font-size: 16px; padding: 14px 120px 14px 20px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+.search-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-glow); }
+.search-input::placeholder { color: var(--muted); }
+.search-btn { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: var(--blue); border: none; border-radius: 4px; padding: 8px 16px; display: flex; align-items: center; gap: 6px; cursor: pointer; transition: background 0.15s; color: #fff; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; }
+.search-btn:hover { background: var(--blue-dark); }
+.search-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.examples { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 16px; }
+.example-btn { font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 5px 14px; border-radius: 99px; border: 1px solid var(--bd); background: transparent; color: var(--muted); cursor: pointer; transition: all 0.15s; }
 .example-btn:hover { border-color: var(--blue); color: var(--blue-bright); background: var(--blue-glow); }
 
 /* ── LOADING ── */
-.loading {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  padding: 80px 32px;
-  text-align: center;
-}
+.loading { display: none; flex-direction: column; align-items: center; gap: 16px; padding: 80px 32px; text-align: center; }
 .loading.show { display: flex; }
-.spinner {
-  width: 40px;
-  height: 40px;
-  border: 2px solid var(--bd);
-  border-top-color: var(--blue);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
+.spinner { width: 40px; height: 40px; border: 2px solid var(--bd); border-top-color: var(--blue); border-radius: 50%; animation: spin 0.8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
-.loading-text {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--muted);
-  letter-spacing: 2px;
-}
+.loading-text { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 2px; }
 
 /* ── RESULTS ── */
 .results { display: none; padding: 0 32px 80px; max-width: 1200px; margin: 0 auto; }
 .results.show { display: block; }
 
 /* ── ACTOR HEADER ── */
-.actor-header {
-  background: var(--s1);
-  border: 1px solid var(--bd);
-  border-top: 3px solid var(--blue);
-  border-radius: var(--radius);
-  padding: 28px 32px;
-  margin-bottom: 24px;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 24px;
-  align-items: start;
-}
-.actor-type-badge {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  padding: 3px 10px;
-  border-radius: 3px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 10px;
-  display: inline-block;
-}
-.actor-name {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 42px;
-  font-weight: 800;
-  color: var(--txt);
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  line-height: 1;
-  margin-bottom: 8px;
-}
-.actor-aliases {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--muted);
-  margin-bottom: 12px;
-}
-.actor-desc {
-  font-size: 13px;
-  color: var(--txt);
-  opacity: 0.8;
-  line-height: 1.7;
-  max-width: 700px;
-}
-.actor-stats {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  min-width: 160px;
-}
-.stat-box {
-  background: var(--s2);
-  border: 1px solid var(--bd);
-  border-radius: var(--radius);
-  padding: 14px 18px;
-  text-align: center;
-}
-.stat-num {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 36px;
-  font-weight: 800;
-  color: var(--blue-bright);
-  line-height: 1;
-  margin-bottom: 4px;
-}
-.stat-label {
-  font-size: 10px;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
+.actor-header { background: var(--s1); border: 1px solid var(--bd); border-top: 3px solid var(--blue); border-radius: 6px; padding: 28px 32px; margin-bottom: 24px; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: start; }
+.actor-type-badge { font-family: 'JetBrains Mono', monospace; font-size: 9px; padding: 3px 10px; border-radius: 3px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: inline-block; }
+.badge-apt { background: rgba(37,99,235,0.2); color: var(--blue-bright); border: 1px solid rgba(37,99,235,0.3); }
+.badge-mal { background: rgba(239,68,68,0.2); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
+.actor-name { font-family: 'Barlow Condensed', sans-serif; font-size: 42px; font-weight: 800; color: var(--txt); letter-spacing: 1px; text-transform: uppercase; line-height: 1; margin-bottom: 8px; }
+.actor-aliases { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); margin-bottom: 12px; }
+.actor-desc { font-size: 13px; color: var(--txt); opacity: 0.8; line-height: 1.7; max-width: 700px; }
+.actor-stats { display: flex; flex-direction: column; gap: 12px; min-width: 160px; }
+.stat-box { background: var(--s2); border: 1px solid var(--bd); border-radius: 6px; padding: 14px 18px; text-align: center; }
+.stat-num { font-family: 'Barlow Condensed', sans-serif; font-size: 36px; font-weight: 800; color: var(--blue-bright); line-height: 1; margin-bottom: 4px; }
+.stat-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
 
-/* ── KILL CHAIN VIZ ── */
-.killchain {
-  display: flex;
-  gap: 4px;
-  overflow-x: auto;
-  padding-bottom: 8px;
-  margin-bottom: 32px;
-  scrollbar-width: thin;
-  scrollbar-color: var(--bd) transparent;
-}
-.kc-phase {
-  flex-shrink: 0;
-  background: var(--s1);
-  border: 1px solid var(--bd);
-  border-radius: var(--radius);
-  padding: 10px 14px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.15s;
-  position: relative;
-  min-width: 120px;
-}
-.kc-phase.active {
-  background: var(--blue-glow);
-  border-color: var(--blue);
-}
-.kc-phase:hover { border-color: var(--blue-bright); }
-.kc-risk {
-  height: 3px;
-  background: var(--bd);
-  border-radius: 2px;
-  margin-bottom: 8px;
-  overflow: hidden;
-}
-.kc-risk-fill {
-  height: 100%;
-  border-radius: 2px;
-  transition: width 0.6s ease;
-}
-.kc-name {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 4px;
-  line-height: 1.3;
-}
-.kc-count {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--txt);
-}
+/* ── KILL CHAIN ── */
+.killchain { display: flex; gap: 4px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 32px; scrollbar-width: thin; scrollbar-color: var(--bd) transparent; }
+.kc-phase { flex-shrink: 0; background: var(--s1); border: 1px solid var(--bd); border-radius: 6px; padding: 10px 14px; text-align: center; cursor: pointer; transition: all 0.15s; min-width: 120px; }
+.kc-phase:hover { border-color: var(--blue-bright); background: var(--s2); }
+.kc-risk { height: 3px; background: var(--bd); border-radius: 2px; margin-bottom: 8px; overflow: hidden; }
+.kc-risk-fill { height: 100%; border-radius: 2px; }
+.kc-name { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; line-height: 1.3; }
+.kc-count { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 700; color: var(--txt); }
 
-/* ── TACTIC SECTIONS ── */
-.tactic-section {
-  margin-bottom: 24px;
-  border: 1px solid var(--bd);
-  border-radius: var(--radius);
-  overflow: hidden;
-}
-.tactic-header {
-  background: var(--s2);
-  border-bottom: 1px solid var(--bd);
-  padding: 14px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  user-select: none;
-}
-.tactic-header:hover { background: var(--s3); }
-.tactic-left { display: flex; align-items: center; gap: 12px; }
-.tactic-id {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  color: var(--blue-bright);
-  letter-spacing: 2px;
-}
-.tactic-name {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--txt);
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-}
-.tactic-right { display: flex; align-items: center; gap: 12px; }
-.tactic-count {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--muted);
-}
-.tactic-risk-pill {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  padding: 3px 10px;
-  border-radius: 99px;
-  font-weight: 600;
-}
-.tactic-chevron {
-  color: var(--muted);
-  transition: transform 0.2s;
-}
-.tactic-section.collapsed .tactic-chevron { transform: rotate(-90deg); }
-.tactic-body {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-  gap: 1px;
-  background: var(--bd);
-}
-.tactic-section.collapsed .tactic-body { display: none; }
-
-/* ── TECHNIQUE CARD ── */
-.tech-card {
-  background: var(--s1);
-  padding: 16px 20px;
-  transition: background 0.1s;
-}
-.tech-card:hover { background: var(--s2); }
-.tech-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
-.tech-id {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--blue-bright);
-  flex-shrink: 0;
-  background: var(--blue-glow);
-  padding: 2px 8px;
-  border-radius: 3px;
-  border: 1px solid rgba(37,99,235,0.2);
-}
-.tech-sub-badge {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  color: var(--muted);
-  padding: 2px 6px;
-  border-radius: 3px;
-  border: 1px solid var(--bd);
-  flex-shrink: 0;
-}
-.tech-name {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--txt);
-  margin-bottom: 6px;
-  line-height: 1.3;
-}
-.tech-desc {
-  font-size: 12px;
-  color: var(--muted);
-  line-height: 1.6;
-  margin-bottom: 10px;
-}
-.tech-use {
-  background: var(--s3);
-  border-left: 2px solid var(--blue);
-  padding: 8px 12px;
-  font-size: 11px;
-  color: var(--txt);
-  opacity: 0.85;
-  line-height: 1.5;
-  border-radius: 0 3px 3px 0;
-  margin-bottom: 10px;
-}
-.tech-use-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  color: var(--blue-bright);
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  margin-bottom: 4px;
-}
-.mitigations-toggle {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--green);
-  cursor: pointer;
-  background: none;
-  border: none;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  transition: opacity 0.15s;
-}
-.mitigations-toggle:hover { opacity: 0.7; }
-.mitigations-body {
-  display: none;
-  margin-top: 10px;
-  border-top: 1px solid var(--bd);
-  padding-top: 10px;
-}
-.mitigations-body.open { display: block; }
-.mitigation-item {
-  background: rgba(16,185,129,0.05);
-  border: 1px solid rgba(16,185,129,0.15);
-  border-radius: 4px;
-  padding: 8px 12px;
-  margin-bottom: 6px;
-}
-.mitigation-item:last-child { margin-bottom: 0; }
-.mit-name {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--green);
-  margin-bottom: 4px;
-}
-.mit-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
-
-/* ── EMPTY STATE ── */
-.empty {
-  text-align: center;
-  padding: 80px 32px;
-  display: none;
-}
-.empty.show { display: block; }
-.empty-icon { font-size: 48px; margin-bottom: 16px; }
-.empty-title {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--txt);
-  text-transform: uppercase;
-  margin-bottom: 8px;
-}
-.empty-sub { font-size: 13px; color: var(--muted); }
-
-/* ── EXPORT BTN ── */
-.export-bar {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 20px;
-}
-.btn-export {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--blue);
-  color: #fff;
-  border: none;
-  border-radius: var(--radius);
-  padding: 10px 20px;
-  font-size: 13px;
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.15s;
-}
+/* ── EXPORT ── */
+.export-bar { display: flex; justify-content: flex-end; margin-bottom: 20px; }
+.btn-export { display: flex; align-items: center; gap: 8px; background: var(--blue); color: #fff; border: none; border-radius: 6px; padding: 10px 20px; font-size: 13px; font-family: 'DM Sans', sans-serif; font-weight: 500; cursor: pointer; transition: background 0.15s; }
 .btn-export:hover { background: var(--blue-dark); }
 
-/* ── FOOTER ── */
-.footer {
-  position: relative;
-  z-index: 1;
-  border-top: 1px solid var(--bd);
-  padding: 20px 32px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--muted);
-}
+/* ── TACTIC ── */
+.tactic-section { margin-bottom: 24px; border: 1px solid var(--bd); border-radius: 6px; overflow: hidden; }
+.tactic-header { background: var(--s2); border-bottom: 1px solid var(--bd); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; transition: background 0.1s; }
+.tactic-header:hover { background: var(--s3); }
+.tactic-left { display: flex; align-items: center; gap: 12px; }
+.tactic-idx { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--blue-bright); letter-spacing: 2px; }
+.tactic-name-el { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; color: var(--txt); letter-spacing: 0.5px; text-transform: uppercase; }
+.tactic-right { display: flex; align-items: center; gap: 12px; }
+.tactic-count { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); }
+.tactic-risk-pill { font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 3px 10px; border-radius: 99px; font-weight: 600; }
+.tactic-chevron { color: var(--muted); transition: transform 0.2s; }
+.tactic-section.collapsed .tactic-chevron { transform: rotate(-90deg); }
+.tactic-body { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 1px; background: var(--bd); }
+.tactic-section.collapsed .tactic-body { display: none; }
 
-/* ── SCROLLBAR ── */
+/* ── TECH CARD ── */
+.tech-card { background: var(--s1); padding: 16px 20px; transition: background 0.1s; }
+.tech-card:hover { background: var(--s2); }
+.tech-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+.tech-id { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--blue-bright); flex-shrink: 0; background: var(--blue-glow); padding: 2px 8px; border-radius: 3px; border: 1px solid rgba(37,99,235,0.2); }
+.tech-name { font-size: 13px; font-weight: 600; color: var(--txt); margin-bottom: 6px; line-height: 1.3; }
+.tech-desc { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 10px; }
+.tech-use { background: var(--s3); border-left: 2px solid var(--blue); padding: 8px 12px; font-size: 11px; color: var(--txt); opacity: 0.85; line-height: 1.5; border-radius: 0 3px 3px 0; margin-bottom: 10px; }
+.tech-use-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--blue-bright); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+.mitigations-toggle { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--green); cursor: pointer; background: none; border: none; padding: 0; display: flex; align-items: center; gap: 5px; }
+.mitigations-toggle:hover { opacity: 0.7; }
+.mitigations-body { display: none; margin-top: 10px; border-top: 1px solid var(--bd); padding-top: 10px; }
+.mitigations-body.open { display: block; }
+.mitigation-item { background: rgba(16,185,129,0.05); border: 1px solid rgba(16,185,129,0.15); border-radius: 4px; padding: 8px 12px; margin-bottom: 6px; }
+.mit-name { font-size: 12px; font-weight: 600; color: var(--green); margin-bottom: 4px; }
+.mit-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+/* ── ERROR ── */
+.error-box { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); border-radius: 6px; padding: 20px 24px; margin: 20px 0; font-size: 13px; color: var(--red); display: none; }
+.error-box.show { display: block; }
+
+/* ── FOOTER ── */
+.footer { position: relative; z-index: 1; border-top: 1px solid var(--bd); padding: 20px 32px; display: flex; justify-content: space-between; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); background: var(--s1); }
+
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--bd); border-radius: 3px; }
 
-/* ── PRINT ── */
 @media print {
   * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-  .nav, .hero, .search-wrap, .examples, .export-bar, .footer { display: none !important; }
-  body { background: #060B14 !important; padding: 0; }
+  .nav, .hero, .export-bar, .footer { display: none !important; }
+  body { padding: 0; }
   .results { display: block !important; padding: 20px; }
   .tactic-section.collapsed .tactic-body { display: grid !important; }
   @page { margin: 0; size: A4; }
@@ -640,76 +219,64 @@ body::before {
 </head>
 <body>
 
-<!-- NAV -->
 <nav class="nav">
   <div class="nav-brand">
     <div class="nav-logo">VM</div>
     <span class="nav-name">VMBLUE</span>
     <span class="nav-sub">TTP MAPPER</span>
   </div>
-  <span class="nav-tag">MITRE ATT&CK</span>
+  <div class="nav-actions">
+    <button class="nav-toggle active" id="btnPT" onclick="setLang('pt')">PT</button>
+    <button class="nav-toggle" id="btnEN" onclick="setLang('en')">EN</button>
+    <button class="nav-toggle" id="btnTheme" onclick="toggleTheme()" title="Alternar tema">
+      <span id="themeIcon">☀️</span>
+    </button>
+    <span class="nav-tag">MITRE ATT&CK</span>
+  </div>
 </nav>
 
 <main class="main">
-
-  <!-- HERO -->
   <section class="hero">
-    <div class="hero-eyebrow">// Threat-Informed Defense</div>
+    <div class="hero-eyebrow" id="txt-eyebrow">// Threat-Informed Defense</div>
     <h1 class="hero-title">TTP<br><span>Mapper</span></h1>
-    <p class="hero-desc">Mapeie as táticas, técnicas e procedimentos de qualquer grupo APT ou malware com dados em tempo real do MITRE ATT&CK. Preveja ataques antes que aconteçam.</p>
-
-    <!-- SEARCH -->
+    <p class="hero-desc" id="txt-desc">Mapeie as táticas, técnicas e procedimentos de qualquer grupo APT ou malware. Preveja ataques antes que aconteçam.</p>
     <div class="search-wrap">
-      <input
-        type="text"
-        class="search-input"
-        id="searchInput"
-        placeholder="Ex: Qilin, APT28, Lazarus, LockBit..."
-        autocomplete="off"
-        spellcheck="false"
-      >
-      <button class="search-btn" id="searchBtn" title="Buscar">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" class="search-input" id="searchInput" placeholder="Ex: Qilin, APT28, Lazarus, LockBit..." autocomplete="off" spellcheck="false">
+      <button class="search-btn" id="searchBtn" onclick="doSearch()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <span id="txt-search">Buscar</span>
       </button>
-      <div class="suggestions" id="suggestions"></div>
     </div>
-
     <div class="examples">
-      <span style="font-size:11px;color:var(--muted);margin-right:4px">Exemplos:</span>
+      <span style="font-size:11px;color:var(--muted);margin-right:4px" id="txt-examples">Exemplos:</span>
       <button class="example-btn" onclick="quickSearch('Qilin')">Qilin</button>
       <button class="example-btn" onclick="quickSearch('APT28')">APT28</button>
-      <button class="example-btn" onclick="quickSearch('Lazarus')">Lazarus</button>
+      <button class="example-btn" onclick="quickSearch('Lazarus Group')">Lazarus</button>
       <button class="example-btn" onclick="quickSearch('LockBit')">LockBit</button>
       <button class="example-btn" onclick="quickSearch('Kimsuky')">Kimsuky</button>
     </div>
   </section>
 
-  <!-- LOADING -->
   <div class="loading" id="loading">
     <div class="spinner"></div>
-    <div class="loading-text">Buscando no MITRE ATT&CK...</div>
+    <div class="loading-text" id="loadingText">Consultando MITRE ATT&CK...</div>
   </div>
 
-  <!-- EMPTY -->
-  <div class="empty" id="empty">
-    <div class="empty-icon">🔍</div>
-    <div class="empty-title">Nenhum resultado</div>
-    <div class="empty-sub">Tente outro nome de grupo ou malware</div>
+  <div style="max-width:1200px;margin:0 auto;padding:0 32px">
+    <div class="error-box" id="errorBox"></div>
   </div>
 
-  <!-- RESULTS -->
   <div class="results" id="results">
     <div class="actor-header" id="actorHeader"></div>
     <div class="export-bar">
-      <button class="btn-export" onclick="exportPDF()">
+      <button class="btn-export" onclick="window.print()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        Exportar PDF
+        <span id="txt-export">Exportar PDF</span>
       </button>
     </div>
     <div class="killchain" id="killchain"></div>
     <div id="tacticsContainer"></div>
   </div>
-
 </main>
 
 <footer class="footer">
@@ -718,254 +285,304 @@ body::before {
 </footer>
 
 <script>
+// ── CONFIG ──
 const WORKER_URL = 'https://mitre-api.vmblue.workers.dev'
 
-// ── STATE ──
-let searchTimeout = null
-let currentData = null
+// ── ESTADO ──
+let currentLang = 'pt'
+let currentTheme = 'dark'
+let lastData = null
 
-// ── RISK COLORS ──
-function riskColor(score) {
-  if (score >= 80) return '#EF4444'
-  if (score >= 50) return '#F59E0B'
-  if (score >= 25) return '#3B82F6'
-  return '#10B981'
+// ── TRADUÇÕES DE UI ──
+const UI = {
+  pt: {
+    eyebrow: '// Threat-Informed Defense',
+    desc: 'Mapeie as táticas, técnicas e procedimentos de qualquer grupo APT ou malware. Preveja ataques antes que aconteçam.',
+    search: 'Buscar',
+    examples: 'Exemplos:',
+    export: 'Exportar PDF',
+    loading: 'Consultando MITRE ATT&CK...',
+    techniques: 'Técnicas',
+    tactics: 'Táticas',
+    mitreId: 'MITRE ID',
+    howUses: '// Como usa',
+    mitigations: 'mitigação',
+    mitigations_pl: 'mitigações',
+    apt: 'APT / Grupo',
+    malware: 'Malware / RaaS',
+    tool: 'Ferramenta',
+    risk: { critical: 'Crítico', high: 'Alto', medium: 'Médio', low: 'Baixo' }
+  },
+  en: {
+    eyebrow: '// Threat-Informed Defense',
+    desc: 'Map the tactics, techniques and procedures of any APT group or malware. Predict attacks before they happen.',
+    search: 'Search',
+    examples: 'Examples:',
+    export: 'Export PDF',
+    loading: 'Querying MITRE ATT&CK...',
+    techniques: 'Techniques',
+    tactics: 'Tactics',
+    mitreId: 'MITRE ID',
+    howUses: '// How it uses',
+    mitigations: 'mitigation',
+    mitigations_pl: 'mitigations',
+    apt: 'APT / Group',
+    malware: 'Malware / RaaS',
+    tool: 'Tool',
+    risk: { critical: 'Critical', high: 'High', medium: 'Medium', low: 'Low' }
+  }
 }
 
-function riskLabel(score) {
-  if (score >= 80) return { label: 'Crítico', color: '#EF4444', bg: 'rgba(239,68,68,0.1)', border: 'rgba(239,68,68,0.3)' }
-  if (score >= 50) return { label: 'Alto', color: '#F59E0B', bg: 'rgba(245,158,11,0.1)', border: 'rgba(245,158,11,0.3)' }
-  if (score >= 25) return { label: 'Médio', color: '#3B82F6', bg: 'rgba(59,130,246,0.1)', border: 'rgba(59,130,246,0.3)' }
-  return { label: 'Baixo', color: '#10B981', bg: 'rgba(16,185,129,0.1)', border: 'rgba(16,185,129,0.3)' }
+// ── TACTIC LABELS ──
+const TACTIC_LABELS = {
+  pt: {
+    'reconnaissance': 'Reconhecimento',
+    'resource-development': 'Desenvolvimento de Recursos',
+    'initial-access': 'Acesso Inicial',
+    'execution': 'Execução',
+    'persistence': 'Persistência',
+    'privilege-escalation': 'Elevação de Privilégio',
+    'defense-evasion': 'Evasão de Defesa',
+    'credential-access': 'Acesso a Credenciais',
+    'discovery': 'Descoberta',
+    'lateral-movement': 'Movimento Lateral',
+    'collection': 'Coleta',
+    'command-and-control': 'Comando e Controle',
+    'exfiltration': 'Exfiltração',
+    'impact': 'Impacto'
+  },
+  en: {
+    'reconnaissance': 'Reconnaissance',
+    'resource-development': 'Resource Development',
+    'initial-access': 'Initial Access',
+    'execution': 'Execution',
+    'persistence': 'Persistence',
+    'privilege-escalation': 'Privilege Escalation',
+    'defense-evasion': 'Defense Evasion',
+    'credential-access': 'Credential Access',
+    'discovery': 'Discovery',
+    'lateral-movement': 'Lateral Movement',
+    'collection': 'Collection',
+    'command-and-control': 'Command and Control',
+    'exfiltration': 'Exfiltration',
+    'impact': 'Impact'
+  }
+}
+
+const TACTIC_ORDER = [
+  'reconnaissance','resource-development','initial-access','execution',
+  'persistence','privilege-escalation','defense-evasion','credential-access',
+  'discovery','lateral-movement','collection','command-and-control','exfiltration','impact'
+]
+
+// ── HELPERS ──
+function riskColor(s){ return s>=80?'#EF4444':s>=50?'#F59E0B':s>=25?'#3B82F6':'#10B981' }
+function riskLabel(s){
+  const t = UI[currentLang].risk
+  if(s>=80) return {label:t.critical,color:'#EF4444',bg:'rgba(239,68,68,0.1)',border:'rgba(239,68,68,0.3)'}
+  if(s>=50) return {label:t.high,color:'#F59E0B',bg:'rgba(245,158,11,0.1)',border:'rgba(245,158,11,0.3)'}
+  if(s>=25) return {label:t.medium,color:'#3B82F6',bg:'rgba(59,130,246,0.1)',border:'rgba(59,130,246,0.3)'}
+  return {label:t.low,color:'#10B981',bg:'rgba(16,185,129,0.1)',border:'rgba(16,185,129,0.3)'}
+}
+
+// Limpa markdown e citações do texto MITRE
+function cleanText(text) {
+  if(!text) return ''
+  return text
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')   // [texto](url) → texto
+    .replace(/\(Citation:[^)]+\)/g, '')          // (Citation: xxx) → remove
+    .replace(/\[\[([^\]]+)\]\]/g, '$1')          // [[texto]] → texto
+    .replace(/\s+/g, ' ')                        // espaços múltiplos
+    .trim()
+}
+
+// ── TEMA ──
+function toggleTheme(){
+  currentTheme = currentTheme === 'dark' ? 'light' : 'dark'
+  document.documentElement.setAttribute('data-theme', currentTheme)
+  document.getElementById('themeIcon').textContent = currentTheme === 'dark' ? '☀️' : '🌙'
+}
+
+// ── IDIOMA ──
+function setLang(lang){
+  currentLang = lang
+  document.documentElement.setAttribute('data-lang', lang)
+  document.getElementById('btnPT').classList.toggle('active', lang==='pt')
+  document.getElementById('btnEN').classList.toggle('active', lang==='en')
+  const t = UI[lang]
+  document.getElementById('txt-eyebrow').textContent = t.eyebrow
+  document.getElementById('txt-desc').textContent = t.desc
+  document.getElementById('txt-search').textContent = t.search
+  document.getElementById('txt-examples').textContent = t.examples
+  document.getElementById('txt-export').textContent = t.export
+  document.getElementById('searchInput').placeholder = lang==='pt'
+    ? 'Ex: Qilin, APT28, Lazarus, LockBit...'
+    : 'Ex: Qilin, APT28, Lazarus, LockBit...'
+  // Re-renderiza se tiver dados
+  if(lastData) renderResults(lastData)
 }
 
 // ── SEARCH ──
-const searchInput = document.getElementById('searchInput')
-const suggestions = document.getElementById('suggestions')
-
-searchInput.addEventListener('input', () => {
-  clearTimeout(searchTimeout)
-  const q = searchInput.value.trim()
-  if (q.length < 2) { suggestions.classList.remove('open'); return }
-  searchTimeout = setTimeout(() => fetchSuggestions(q), 300)
+document.getElementById('searchInput').addEventListener('keydown', e => {
+  if(e.key === 'Enter') doSearch()
 })
 
-searchInput.addEventListener('keydown', e => {
-  if (e.key === 'Enter') {
-    suggestions.classList.remove('open')
-    const q = searchInput.value.trim()
-    if (q) fetchSuggestions(q, true)
-  }
-  if (e.key === 'Escape') suggestions.classList.remove('open')
-})
-
-document.getElementById('searchBtn').addEventListener('click', () => {
-  const q = searchInput.value.trim()
-  if (q) { suggestions.classList.remove('open'); fetchSuggestions(q, true) }
-})
-
-document.addEventListener('click', e => {
-  if (!e.target.closest('.search-wrap')) suggestions.classList.remove('open')
-})
-
-async function fetchSuggestions(q, autoSelect = false) {
-  try {
-    const res = await fetch(`${WORKER_URL}/api/search?q=${encodeURIComponent(q)}`)
-    const data = await res.json()
-    if (!Array.isArray(data) || data.length === 0) {
-      if (autoSelect) showEmpty()
-      suggestions.classList.remove('open')
-      return
-    }
-    if (autoSelect && data.length === 1) {
-      loadActor(data[0])
-      return
-    }
-    renderSuggestions(data)
-    if (!autoSelect) suggestions.classList.add('open')
-    if (autoSelect) loadActor(data[0])
-  } catch(err) {
-    console.error(err)
-  }
+function quickSearch(name){
+  document.getElementById('searchInput').value = name
+  doSearch()
 }
 
-function renderSuggestions(items) {
-  suggestions.innerHTML = items.slice(0, 8).map(item => `
-    <div class="suggestion-item" onclick="loadActor(${JSON.stringify(item).replace(/"/g, '&quot;')})">
-      <span class="sug-type type-${item.type}">${item.type === 'intrusion-set' ? 'APT' : item.type}</span>
-      <div class="sug-info">
-        <div class="sug-name">${item.name}</div>
-        <div class="sug-id">${item.mitre_id || item.id}</div>
-      </div>
-    </div>
-  `).join('')
-}
+async function doSearch(){
+  const q = document.getElementById('searchInput').value.trim()
+  if(!q) return
 
-function quickSearch(name) {
-  searchInput.value = name
-  suggestions.classList.remove('open')
-  fetchSuggestions(name, true)
-}
+  const t = UI[currentLang]
+  showLoading(t.loading)
+  document.getElementById('results').classList.remove('show')
+  document.getElementById('errorBox').classList.remove('show')
 
-// ── LOAD ACTOR ──
-async function loadActor(actorRef) {
-  suggestions.classList.remove('open')
-  showLoading()
+  const btn = document.getElementById('searchBtn')
+  btn.disabled = true
 
   try {
-    const res = await fetch(`${WORKER_URL}/api/actor/${encodeURIComponent(actorRef.id)}`)
-    const data = await res.json()
-    if (data.error) { showEmpty(); return }
-    currentData = data
-    renderResults(data)
+    // Busca na API do Worker
+    const searchRes = await fetch(`${WORKER_URL}/api/search?q=${encodeURIComponent(q)}`)
+    const searchData = await searchRes.json()
+
+    if(!Array.isArray(searchData) || searchData.length === 0) {
+      throw new Error(currentLang==='pt' ? 'Grupo não encontrado no MITRE ATT&CK' : 'Group not found in MITRE ATT&CK')
+    }
+
+    const actor = searchData[0]
+    const detailRes = await fetch(`${WORKER_URL}/api/actor/${encodeURIComponent(actor.id)}`)
+    const detailData = await detailRes.json()
+
+    if(detailData.error) throw new Error(detailData.error)
+
+    lastData = detailData
+    renderResults(detailData)
+
   } catch(err) {
-    console.error(err)
-    showEmpty()
+    showError(err.message)
   }
+
+  btn.disabled = false
 }
 
 // ── RENDER ──
-function renderResults(data) {
-  const { actor, tactics, total_techniques, total_tactics } = data
+function renderResults(data){
+  const { actor, tactics } = data
+  const t = UI[currentLang]
+  const tacticLabels = TACTIC_LABELS[currentLang]
+
+  // Filtra e ordena táticas
+  const tacticsFiltered = {}
+  TACTIC_ORDER.forEach(slug => {
+    if(tactics[slug] && tactics[slug].techniques?.length > 0){
+      tacticsFiltered[slug] = { ...tactics[slug], label: tacticLabels[slug] || tactics[slug].label }
+    }
+  })
+
+  // Risk scores
+  const maxT = Math.max(...Object.values(tacticsFiltered).map(t=>t.techniques.length), 1)
+  Object.keys(tacticsFiltered).forEach(slug => {
+    tacticsFiltered[slug].risk_score = Math.round((tacticsFiltered[slug].techniques.length / maxT) * 100)
+  })
+
+  const totalTechs = Object.values(tacticsFiltered).reduce((a,t)=>a+t.techniques.length, 0)
+  const isAPT = actor.type === 'intrusion-set'
+  const typeLabel = isAPT ? t.apt : actor.type==='malware' ? t.malware : t.tool
+  const cleanDesc = cleanText(actor.description)
 
   // Actor header
-  const typeLabel = actor.type === 'intrusion-set' ? 'APT / Grupo' : actor.type === 'malware' ? 'Malware / RaaS' : 'Ferramenta'
-  const typeClass = actor.type === 'intrusion-set' ? 'type-intrusion-set' : actor.type === 'malware' ? 'type-malware' : 'type-tool'
-
   document.getElementById('actorHeader').innerHTML = `
     <div>
-      <span class="actor-type-badge sug-type ${typeClass}">${typeLabel}</span>
+      <span class="actor-type-badge ${isAPT?'badge-apt':'badge-mal'}">${typeLabel}</span>
       <div class="actor-name">${actor.name}</div>
-      ${actor.aliases.length ? `<div class="actor-aliases">// ${actor.aliases.join(' · ')}</div>` : ''}
-      <div class="actor-desc">${actor.description || 'Sem descrição disponível.'}</div>
+      ${actor.aliases?.length ? `<div class="actor-aliases">// ${actor.aliases.join(' · ')}</div>` : ''}
+      <div class="actor-desc">${cleanDesc}</div>
     </div>
     <div class="actor-stats">
-      <div class="stat-box">
-        <div class="stat-num">${total_techniques}</div>
-        <div class="stat-label">Técnicas</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-num">${total_tactics}</div>
-        <div class="stat-label">Táticas</div>
-      </div>
-      ${actor.mitre_id ? `<div class="stat-box"><div class="stat-num" style="font-size:18px">${actor.mitre_id}</div><div class="stat-label">MITRE ID</div></div>` : ''}
+      <div class="stat-box"><div class="stat-num">${totalTechs}</div><div class="stat-label">${t.techniques}</div></div>
+      <div class="stat-box"><div class="stat-num">${Object.keys(tacticsFiltered).length}</div><div class="stat-label">${t.tactics}</div></div>
+      ${actor.mitre_id ? `<div class="stat-box"><div class="stat-num" style="font-size:18px">${actor.mitre_id}</div><div class="stat-label">${t.mitreId}</div></div>` : ''}
     </div>
   `
 
   // Kill chain
-  const kc = document.getElementById('killchain')
-  kc.innerHTML = Object.entries(tactics).map(([slug, tactic]) => {
-    const risk = tactic.risk_score || 0
-    const color = riskColor(risk)
-    return `
-      <div class="kc-phase" onclick="scrollToTactic('${slug}')">
-        <div class="kc-risk"><div class="kc-risk-fill" style="width:${risk}%;background:${color}"></div></div>
-        <div class="kc-name">${tactic.label}</div>
-        <div class="kc-count">${tactic.techniques.length}</div>
-      </div>
-    `
+  document.getElementById('killchain').innerHTML = Object.entries(tacticsFiltered).map(([slug, tac]) => {
+    const risk = tac.risk_score || 0
+    return `<div class="kc-phase" onclick="scrollToTactic('${slug}')">
+      <div class="kc-risk"><div class="kc-risk-fill" style="width:${risk}%;background:${riskColor(risk)}"></div></div>
+      <div class="kc-name">${tac.label}</div>
+      <div class="kc-count">${tac.techniques.length}</div>
+    </div>`
   }).join('')
 
-  // Tactics
-  const container = document.getElementById('tacticsContainer')
-  container.innerHTML = Object.entries(tactics).map(([slug, tactic], idx) => {
+  // Tactics + techniques
+  document.getElementById('tacticsContainer').innerHTML = Object.entries(tacticsFiltered).map(([slug, tactic], idx) => {
     const risk = riskLabel(tactic.risk_score || 0)
-    const techs = tactic.techniques.map(tech => renderTechCard(tech)).join('')
-    return `
-      <div class="tactic-section" id="tactic-${slug}">
-        <div class="tactic-header" onclick="toggleTactic(this)">
-          <div class="tactic-left">
-            <span class="tactic-id">0${idx+1}</span>
-            <span class="tactic-name">${tactic.label}</span>
-          </div>
-          <div class="tactic-right">
-            <span class="tactic-count">${tactic.techniques.length} técnica${tactic.techniques.length !== 1 ? 's' : ''}</span>
-            <span class="tactic-risk-pill" style="background:${risk.bg};color:${risk.color};border:1px solid ${risk.border}">${risk.label}</span>
-            <svg class="tactic-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-          </div>
+    const techs = (tactic.techniques || []).map(tech => {
+      const cleanDesc2 = cleanText(tech.description)
+      const cleanUse = cleanText(tech.use)
+      const mits = tech.mitigations || []
+      const mitLabel = mits.length === 1 ? `1 ${t.mitigations}` : `${mits.length} ${t.mitigations_pl}`
+      return `
+        <div class="tech-card">
+          <div class="tech-top"><span class="tech-id">${tech.mitre_id||''}</span></div>
+          <div class="tech-name">${tech.name}</div>
+          <div class="tech-desc">${cleanDesc2}</div>
+          ${cleanUse ? `<div class="tech-use"><div class="tech-use-label">${t.howUses}</div>${cleanUse}</div>` : ''}
+          ${mits.length ? `
+            <button class="mitigations-toggle" onclick="this.nextElementSibling.classList.toggle('open')">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              ${mitLabel}
+            </button>
+            <div class="mitigations-body">
+              ${mits.map(m=>`<div class="mitigation-item"><div class="mit-name">${m.name}</div><div class="mit-desc">${cleanText(m.description)}</div></div>`).join('')}
+            </div>
+          ` : ''}
+        </div>`
+    }).join('')
+
+    return `<div class="tactic-section" id="tactic-${slug}">
+      <div class="tactic-header" onclick="this.parentElement.classList.toggle('collapsed')">
+        <div class="tactic-left">
+          <span class="tactic-idx">0${idx+1}</span>
+          <span class="tactic-name-el">${tactic.label}</span>
         </div>
-        <div class="tactic-body">${techs}</div>
+        <div class="tactic-right">
+          <span class="tactic-count">${tactic.techniques.length} ${tactic.techniques.length!==1?t.techniques.toLowerCase():t.techniques.toLowerCase().replace(/s$/,'')}</span>
+          <span class="tactic-risk-pill" style="background:${risk.bg};color:${risk.color};border:1px solid ${risk.border}">${risk.label}</span>
+          <svg class="tactic-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
       </div>
-    `
+      <div class="tactic-body">${techs}</div>
+    </div>`
   }).join('')
 
   hideLoading()
   document.getElementById('results').classList.add('show')
-  window.scrollTo({ top: 0, behavior: 'smooth' })
+  window.scrollTo({top:0,behavior:'smooth'})
 }
 
-function renderTechCard(tech) {
-  const mits = tech.mitigations || []
-  const mitsHTML = mits.length ? `
-    <button class="mitigations-toggle" onclick="toggleMitigations(this)">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      ${mits.length} mitigação${mits.length !== 1 ? 'ões' : ''}
-    </button>
-    <div class="mitigations-body">
-      ${mits.map(m => `
-        <div class="mitigation-item">
-          <div class="mit-name">${m.name}</div>
-          <div class="mit-desc">${m.description || ''}</div>
-        </div>
-      `).join('')}
-    </div>
-  ` : ''
-
-  return `
-    <div class="tech-card">
-      <div class="tech-top">
-        <span class="tech-id">${tech.mitre_id}</span>
-        ${tech.is_subtechnique ? '<span class="tech-sub-badge">sub</span>' : ''}
-      </div>
-      <div class="tech-name">${tech.name}</div>
-      <div class="tech-desc">${tech.description || ''}</div>
-      ${tech.use ? `<div class="tech-use"><div class="tech-use-label">// Como usa</div>${tech.use}</div>` : ''}
-      ${mitsHTML}
-    </div>
-  `
+function scrollToTactic(slug){
+  const el = document.getElementById('tactic-'+slug)
+  if(el){ el.classList.remove('collapsed'); el.scrollIntoView({behavior:'smooth',block:'start'}) }
 }
 
-// ── TOGGLE ──
-function toggleTactic(header) {
-  header.parentElement.classList.toggle('collapsed')
-}
-
-function toggleMitigations(btn) {
-  const body = btn.nextElementSibling
-  body.classList.toggle('open')
-  btn.style.opacity = body.classList.contains('open') ? '0.5' : '1'
-}
-
-function scrollToTactic(slug) {
-  const el = document.getElementById('tactic-' + slug)
-  if (el) {
-    el.classList.remove('collapsed')
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }
-}
-
-// ── STATES ──
-function showLoading() {
+function showLoading(text){
+  document.getElementById('loadingText').textContent = text || '...'
   document.getElementById('loading').classList.add('show')
   document.getElementById('results').classList.remove('show')
-  document.getElementById('empty').classList.remove('show')
 }
-
-function hideLoading() {
-  document.getElementById('loading').classList.remove('show')
-}
-
-function showEmpty() {
+function hideLoading(){ document.getElementById('loading').classList.remove('show') }
+function showError(msg){
   hideLoading()
-  document.getElementById('results').classList.remove('show')
-  document.getElementById('empty').classList.add('show')
-}
-
-// ── EXPORT ──
-function exportPDF() {
-  window.print()
+  const el = document.getElementById('errorBox')
+  el.textContent = msg
+  el.classList.add('show')
 }
 </script>
-
 </body>
 </html>
