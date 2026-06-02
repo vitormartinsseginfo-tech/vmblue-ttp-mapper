@@ -568,7 +568,15 @@ function renderResults(data){
 
 function scrollToTactic(slug){
   const el = document.getElementById('tactic-'+slug)
-  if(el){ el.classList.remove('collapsed'); el.scrollIntoView({behavior:'smooth',block:'start'}) }
+  if(!el) return
+  // Expande primeiro
+  el.classList.remove('collapsed')
+  // Aguarda o DOM atualizar antes de scrollar
+  setTimeout(() => {
+    const offset = 70 // altura do nav fixo
+    const top = el.getBoundingClientRect().top + window.pageYOffset - offset
+    window.scrollTo({ top, behavior: 'smooth' })
+  }, 50)
 }
 
 function showLoading(text){
