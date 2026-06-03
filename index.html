@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" data-theme="dark" data-lang="pt">
+<html lang="pt-BR" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -226,8 +226,6 @@ body::before {
     <span class="nav-sub">TTP MAPPER</span>
   </div>
   <div class="nav-actions">
-    <button class="nav-toggle active" id="btnPT" onclick="setLang('pt')">PT</button>
-    <button class="nav-toggle" id="btnEN" onclick="setLang('en')">EN</button>
     <button class="nav-toggle" id="btnTheme" onclick="toggleTheme()" title="Alternar tema">
       <span id="themeIcon">☀️</span>
     </button>
@@ -237,18 +235,18 @@ body::before {
 
 <main class="main">
   <section class="hero">
-    <div class="hero-eyebrow" id="txt-eyebrow">// Threat-Informed Defense</div>
+    <div class="hero-eyebrow">// Threat-Informed Defense</div>
     <h1 class="hero-title">TTP<br><span>Mapper</span></h1>
-    <p class="hero-desc" id="txt-desc">Mapeie as táticas, técnicas e procedimentos de qualquer grupo APT ou malware. Preveja ataques antes que aconteçam.</p>
+    <p class="hero-desc">Mapeie as táticas, técnicas e procedimentos de qualquer grupo APT ou malware. Preveja ataques antes que aconteçam.</p>
     <div class="search-wrap">
       <input type="text" class="search-input" id="searchInput" placeholder="Ex: Qilin, APT28, Lazarus, LockBit..." autocomplete="off" spellcheck="false">
       <button class="search-btn" id="searchBtn" onclick="doSearch()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-        <span id="txt-search">Buscar</span>
+        <span>Buscar</span>
       </button>
     </div>
     <div class="examples">
-      <span style="font-size:11px;color:var(--muted);margin-right:4px" id="txt-examples">Exemplos:</span>
+      <span style="font-size:11px;color:var(--muted);margin-right:4px">Exemplos:</span>
       <button class="example-btn" onclick="quickSearch('Qilin')">Qilin</button>
       <button class="example-btn" onclick="quickSearch('APT28')">APT28</button>
       <button class="example-btn" onclick="quickSearch('Lazarus Group')">Lazarus</button>
@@ -271,7 +269,7 @@ body::before {
     <div class="export-bar">
       <button class="btn-export" onclick="window.print()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        <span id="txt-export">Exportar PDF</span>
+        <span>Exportar PDF</span>
       </button>
     </div>
     <div class="killchain" id="killchain"></div>
@@ -290,84 +288,39 @@ body::before {
 const WORKER_URL = 'https://mitre-api.vmblue.workers.dev'
 
 // ── ESTADO ──
-let currentLang = 'pt'
 let currentTheme = 'dark'
-let lastData = null
 
-// ── TRADUÇÕES DE UI ──
+// ── TEXTOS DE UI (PT-BR) ──
 const UI = {
-  pt: {
-    eyebrow: '// Threat-Informed Defense',
-    desc: 'Mapeie as táticas, técnicas e procedimentos de qualquer grupo APT ou malware. Preveja ataques antes que aconteçam.',
-    search: 'Buscar',
-    examples: 'Exemplos:',
-    export: 'Exportar PDF',
-    loading: 'Consultando MITRE ATT&CK...',
-    techniques: 'Técnicas',
-    tactics: 'Táticas',
-    mitreId: 'MITRE ID',
-    howUses: '// Como usa',
-    mitigations: 'mitigação',
-    mitigations_pl: 'mitigações',
-    apt: 'APT / Grupo',
-    malware: 'Malware / RaaS',
-    tool: 'Ferramenta',
-    risk: { critical: 'Crítico', high: 'Alto', medium: 'Médio', low: 'Baixo' }
-  },
-  en: {
-    eyebrow: '// Threat-Informed Defense',
-    desc: 'Map the tactics, techniques and procedures of any APT group or malware. Predict attacks before they happen.',
-    search: 'Search',
-    examples: 'Examples:',
-    export: 'Export PDF',
-    loading: 'Querying MITRE ATT&CK...',
-    techniques: 'Techniques',
-    tactics: 'Tactics',
-    mitreId: 'MITRE ID',
-    howUses: '// How it uses',
-    mitigations: 'mitigation',
-    mitigations_pl: 'mitigations',
-    apt: 'APT / Group',
-    malware: 'Malware / RaaS',
-    tool: 'Tool',
-    risk: { critical: 'Critical', high: 'High', medium: 'Medium', low: 'Low' }
-  }
+  loading: 'Consultando MITRE ATT&CK...',
+  techniques: 'Técnicas',
+  tactics: 'Táticas',
+  mitreId: 'MITRE ID',
+  howUses: '// Como usa',
+  mitigations: 'mitigação',
+  mitigations_pl: 'mitigações',
+  apt: 'APT / Grupo',
+  malware: 'Malware / RaaS',
+  tool: 'Ferramenta',
+  risk: { critical: 'Crítico', high: 'Alto', medium: 'Médio', low: 'Baixo' }
 }
 
-// ── TACTIC LABELS ──
+// ── TACTIC LABELS (PT-BR) ──
 const TACTIC_LABELS = {
-  pt: {
-    'reconnaissance': 'Reconhecimento',
-    'resource-development': 'Desenvolvimento de Recursos',
-    'initial-access': 'Acesso Inicial',
-    'execution': 'Execução',
-    'persistence': 'Persistência',
-    'privilege-escalation': 'Elevação de Privilégio',
-    'defense-evasion': 'Evasão de Defesa',
-    'credential-access': 'Acesso a Credenciais',
-    'discovery': 'Descoberta',
-    'lateral-movement': 'Movimento Lateral',
-    'collection': 'Coleta',
-    'command-and-control': 'Comando e Controle',
-    'exfiltration': 'Exfiltração',
-    'impact': 'Impacto'
-  },
-  en: {
-    'reconnaissance': 'Reconnaissance',
-    'resource-development': 'Resource Development',
-    'initial-access': 'Initial Access',
-    'execution': 'Execution',
-    'persistence': 'Persistence',
-    'privilege-escalation': 'Privilege Escalation',
-    'defense-evasion': 'Defense Evasion',
-    'credential-access': 'Credential Access',
-    'discovery': 'Discovery',
-    'lateral-movement': 'Lateral Movement',
-    'collection': 'Collection',
-    'command-and-control': 'Command and Control',
-    'exfiltration': 'Exfiltration',
-    'impact': 'Impact'
-  }
+  'reconnaissance': 'Reconhecimento',
+  'resource-development': 'Desenvolvimento de Recursos',
+  'initial-access': 'Acesso Inicial',
+  'execution': 'Execução',
+  'persistence': 'Persistência',
+  'privilege-escalation': 'Elevação de Privilégio',
+  'defense-evasion': 'Evasão de Defesa',
+  'credential-access': 'Acesso a Credenciais',
+  'discovery': 'Descoberta',
+  'lateral-movement': 'Movimento Lateral',
+  'collection': 'Coleta',
+  'command-and-control': 'Comando e Controle',
+  'exfiltration': 'Exfiltração',
+  'impact': 'Impacto'
 }
 
 const TACTIC_ORDER = [
@@ -379,7 +332,7 @@ const TACTIC_ORDER = [
 // ── HELPERS ──
 function riskColor(s){ return s>=80?'#EF4444':s>=50?'#F59E0B':s>=25?'#3B82F6':'#10B981' }
 function riskLabel(s){
-  const t = UI[currentLang].risk
+  const t = UI.risk
   if(s>=80) return {label:t.critical,color:'#EF4444',bg:'rgba(239,68,68,0.1)',border:'rgba(239,68,68,0.3)'}
   if(s>=50) return {label:t.high,color:'#F59E0B',bg:'rgba(245,158,11,0.1)',border:'rgba(245,158,11,0.3)'}
   if(s>=25) return {label:t.medium,color:'#3B82F6',bg:'rgba(59,130,246,0.1)',border:'rgba(59,130,246,0.3)'}
@@ -416,25 +369,6 @@ function toggleTheme(){
   document.getElementById('themeIcon').textContent = currentTheme === 'dark' ? '☀️' : '🌙'
 }
 
-// ── IDIOMA ──
-function setLang(lang){
-  currentLang = lang
-  document.documentElement.setAttribute('data-lang', lang)
-  document.getElementById('btnPT').classList.toggle('active', lang==='pt')
-  document.getElementById('btnEN').classList.toggle('active', lang==='en')
-  const t = UI[lang]
-  document.getElementById('txt-eyebrow').textContent = t.eyebrow
-  document.getElementById('txt-desc').textContent = t.desc
-  document.getElementById('txt-search').textContent = t.search
-  document.getElementById('txt-examples').textContent = t.examples
-  document.getElementById('txt-export').textContent = t.export
-  document.getElementById('searchInput').placeholder = lang==='pt'
-    ? 'Ex: Qilin, APT28, Lazarus, LockBit...'
-    : 'Ex: Qilin, APT28, Lazarus, LockBit...'
-  // Re-renderiza se tiver dados
-  if(lastData) renderResults(lastData)
-}
-
 // ── SEARCH ──
 document.getElementById('searchInput').addEventListener('keydown', e => {
   if(e.key === 'Enter') doSearch()
@@ -449,8 +383,7 @@ async function doSearch(){
   const q = document.getElementById('searchInput').value.trim()
   if(!q) return
 
-  const t = UI[currentLang]
-  showLoading(t.loading)
+  showLoading(UI.loading)
   document.getElementById('results').classList.remove('show')
   document.getElementById('errorBox').classList.remove('show')
 
@@ -463,7 +396,7 @@ async function doSearch(){
     const searchData = await searchRes.json()
 
     if(!Array.isArray(searchData) || searchData.length === 0) {
-      throw new Error(currentLang==='pt' ? 'Grupo não encontrado no MITRE ATT&CK' : 'Group not found in MITRE ATT&CK')
+      throw new Error('Grupo não encontrado no MITRE ATT&CK')
     }
 
     const actor = searchData[0]
@@ -472,7 +405,6 @@ async function doSearch(){
 
     if(detailData.error) throw new Error(detailData.error)
 
-    lastData = detailData
     renderResults(detailData)
 
   } catch(err) {
@@ -485,8 +417,8 @@ async function doSearch(){
 // ── RENDER ──
 function renderResults(data){
   const { actor, tactics } = data
-  const t = UI[currentLang]
-  const tacticLabels = TACTIC_LABELS[currentLang]
+  const t = UI
+  const tacticLabels = TACTIC_LABELS
 
   // Filtra e ordena táticas
   const tacticsFiltered = {}
