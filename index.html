@@ -288,6 +288,7 @@ body::before {
 
     <div class="sec-title">Cadeia de Ataque <span class="sec-sub">// progressão por tática (MITRE)</span></div>
     <div class="flow" id="flow"></div>
+    <div class="dash-hint" style="margin:-2px 0 6px">Os números mostram técnicas <b>por tática</b>. Uma mesma técnica pode pertencer a mais de uma tática, então a soma pode ser maior que o total de técnicas únicas exibido no cabeçalho.</div>
 
     <div class="sec-title">Simulação de Campanha <span class="sec-sub">// cenário gerado a partir das TTPs</span></div>
     <div class="sim-bar">
@@ -485,7 +486,7 @@ function renderHeader(actor, tactics, techs){
       <div class="actor-desc">${cleanText(actor.description)}</div>
     </div>
     <div class="actor-stats">
-      <div class="stat-box"><div class="stat-num">${techs.length}</div><div class="stat-label">Técnicas</div></div>
+      <div class="stat-box" title="Técnicas únicas. Uma técnica pode pertencer a mais de uma tática, então a soma das barras por tática pode ser maior."><div class="stat-num">${techs.length}</div><div class="stat-label">Técnicas</div></div>
       <div class="stat-box"><div class="stat-num">${Object.keys(tactics).length}</div><div class="stat-label">Táticas</div></div>
       ${actor.mitre_id ? `<div class="stat-box"><div class="stat-num" style="font-size:18px">${escapeHtml(actor.mitre_id)}</div><div class="stat-label">MITRE ID</div></div>` : ''}
     </div>`
