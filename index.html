@@ -8,103 +8,41 @@
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ── DARK THEME (padrão) ── */
 [data-theme="dark"] {
-  --blue: #2563EB;
-  --blue-bright: #3B82F6;
-  --blue-glow: rgba(37,99,235,0.15);
-  --blue-dark: #1D4ED8;
-  --bg: #060B14;
-  --s1: #0A1120;
-  --s2: #0F1A30;
-  --s3: #162040;
-  --bd: #1E3050;
-  --txt: #E2EAF4;
-  --muted: #4A6A8A;
-  --amber: #F59E0B;
-  --green: #10B981;
-  --red: #EF4444;
-  --nav-bg: rgba(6,11,20,0.95);
-  --grid-color: rgba(37,99,235,0.03);
+  --blue: #2563EB; --blue-bright: #3B82F6; --blue-glow: rgba(37,99,235,0.15); --blue-dark: #1D4ED8;
+  --bg: #060B14; --s1: #0A1120; --s2: #0F1A30; --s3: #162040; --bd: #1E3050;
+  --txt: #E2EAF4; --muted: #4A6A8A; --amber: #F59E0B; --green: #10B981; --red: #EF4444; --purple: #8B5CF6;
+  --nav-bg: rgba(6,11,20,0.95); --grid-color: rgba(37,99,235,0.03);
 }
-
-/* ── LIGHT THEME ── */
 [data-theme="light"] {
-  --blue: #2563EB;
-  --blue-bright: #1D4ED8;
-  --blue-glow: rgba(37,99,235,0.08);
-  --blue-dark: #1E40AF;
-  --bg: #F0F4F8;
-  --s1: #FFFFFF;
-  --s2: #F8FAFC;
-  --s3: #EFF6FF;
-  --bd: #CBD5E1;
-  --txt: #0F172A;
-  --muted: #64748B;
-  --amber: #D97706;
-  --green: #059669;
-  --red: #DC2626;
-  --nav-bg: rgba(240,244,248,0.95);
-  --grid-color: rgba(37,99,235,0.04);
+  --blue: #2563EB; --blue-bright: #1D4ED8; --blue-glow: rgba(37,99,235,0.08); --blue-dark: #1E40AF;
+  --bg: #F0F4F8; --s1: #FFFFFF; --s2: #F8FAFC; --s3: #EFF6FF; --bd: #CBD5E1;
+  --txt: #0F172A; --muted: #64748B; --amber: #D97706; --green: #059669; --red: #DC2626; --purple: #7C3AED;
+  --nav-bg: rgba(240,244,248,0.95); --grid-color: rgba(37,99,235,0.04);
 }
 
 html, body { height: 100%; }
 body {
-  background: var(--bg);
-  color: var(--txt);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
-  line-height: 1.6;
-  overflow-x: hidden;
-  transition: background 0.3s, color 0.3s;
+  background: var(--bg); color: var(--txt); font-family: 'DM Sans', sans-serif;
+  font-size: 14px; line-height: 1.6; overflow-x: hidden; transition: background 0.3s, color 0.3s;
 }
 body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image:
-    linear-gradient(var(--grid-color) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-  background-size: 40px 40px;
-  pointer-events: none;
-  z-index: 0;
+  content: ''; position: fixed; inset: 0;
+  background-image: linear-gradient(var(--grid-color) 1px, transparent 1px), linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+  background-size: 40px 40px; pointer-events: none; z-index: 0;
 }
 
 /* ── NAV ── */
-.nav {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 100;
-  background: var(--nav-bg);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--bd);
-  padding: 0 32px;
-  height: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--nav-bg); backdrop-filter: blur(12px); border-bottom: 1px solid var(--bd); padding: 0 32px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
 .nav-brand { display: flex; align-items: center; gap: 10px; }
 .nav-logo { width: 32px; height: 32px; background: var(--blue); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 14px; color: #fff; letter-spacing: 1px; }
 .nav-name { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: 2px; color: var(--txt); }
 .nav-sub { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 2px; margin-left: 4px; }
 .nav-actions { display: flex; align-items: center; gap: 8px; }
-.nav-toggle {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  padding: 5px 12px;
-  border-radius: 99px;
-  border: 1px solid var(--bd);
-  background: var(--s1);
-  color: var(--muted);
-  cursor: pointer;
-  transition: all 0.15s;
-  letter-spacing: 1px;
-}
-.nav-toggle:hover, .nav-toggle.active { border-color: var(--blue); color: var(--blue-bright); background: var(--blue-glow); }
+.nav-toggle { font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 5px 12px; border-radius: 99px; border: 1px solid var(--bd); background: var(--s1); color: var(--muted); cursor: pointer; transition: all 0.15s; letter-spacing: 1px; }
+.nav-toggle:hover { border-color: var(--blue); color: var(--blue-bright); background: var(--blue-glow); }
 .nav-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--blue-bright); letter-spacing: 2px; padding: 3px 10px; border: 1px solid var(--bd); border-radius: 99px; background: var(--blue-glow); }
 
-/* ── MAIN ── */
 .main { position: relative; z-index: 1; padding-top: 56px; min-height: 100vh; }
 
 /* ── HERO ── */
@@ -137,8 +75,13 @@ body::before {
 .results { display: none; padding: 0 32px 80px; max-width: 1200px; margin: 0 auto; }
 .results.show { display: block; }
 
+/* ── SECTION TITLE ── */
+.sec-title { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--txt); margin: 36px 0 16px; display: flex; align-items: center; gap: 10px; }
+.sec-title::before { content: ''; width: 4px; height: 22px; background: var(--blue); border-radius: 2px; }
+.sec-title .sec-sub { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 400; letter-spacing: 1px; color: var(--muted); text-transform: none; }
+
 /* ── ACTOR HEADER ── */
-.actor-header { background: var(--s1); border: 1px solid var(--bd); border-top: 3px solid var(--blue); border-radius: 6px; padding: 28px 32px; margin-bottom: 24px; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: start; }
+.actor-header { background: var(--s1); border: 1px solid var(--bd); border-top: 3px solid var(--blue); border-radius: 6px; padding: 28px 32px; margin-bottom: 18px; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: start; }
 .actor-type-badge { font-family: 'JetBrains Mono', monospace; font-size: 9px; padding: 3px 10px; border-radius: 3px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: inline-block; }
 .badge-apt { background: rgba(37,99,235,0.2); color: var(--blue-bright); border: 1px solid rgba(37,99,235,0.3); }
 .badge-mal { background: rgba(239,68,68,0.2); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
@@ -150,22 +93,65 @@ body::before {
 .stat-num { font-family: 'Barlow Condensed', sans-serif; font-size: 36px; font-weight: 800; color: var(--blue-bright); line-height: 1; margin-bottom: 4px; }
 .stat-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
 
-/* ── KILL CHAIN ── */
-.killchain { display: flex; gap: 4px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 32px; scrollbar-width: thin; scrollbar-color: var(--bd) transparent; }
-.kc-phase { flex-shrink: 0; background: var(--s1); border: 1px solid var(--bd); border-radius: 6px; padding: 10px 14px; text-align: center; cursor: pointer; transition: all 0.15s; min-width: 120px; }
-.kc-phase:hover { border-color: var(--blue-bright); background: var(--s2); }
-.kc-risk { height: 3px; background: var(--bd); border-radius: 2px; margin-bottom: 8px; overflow: hidden; }
-.kc-risk-fill { height: 100%; border-radius: 2px; }
-.kc-name { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; line-height: 1.3; }
-.kc-count { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 700; color: var(--txt); }
+/* ── PROFILE ── */
+.profile { background: var(--s1); border: 1px solid var(--bd); border-radius: 6px; padding: 20px 24px; margin-bottom: 8px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px 28px; }
+.prof-item { min-width: 0; }
+.prof-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--blue-bright); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px; }
+.prof-value { font-size: 13px; color: var(--txt); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 3px 9px; border-radius: 4px; background: var(--s3); border: 1px solid var(--bd); color: var(--txt); }
+.chip.blue { color: var(--blue-bright); border-color: rgba(37,99,235,0.3); background: var(--blue-glow); }
+.chip.red { color: var(--red); border-color: rgba(239,68,68,0.25); background: rgba(239,68,68,0.08); }
+.chip.green { color: var(--green); border-color: rgba(16,185,129,0.25); background: rgba(16,185,129,0.07); }
+
+/* ── DASHBOARD ── */
+.dash-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 16px; }
+.dash-card { background: var(--s1); border: 1px solid var(--bd); border-radius: 6px; padding: 18px 20px; }
+.dash-card .prof-label { margin-bottom: 10px; }
+.risk-big { font-family: 'Barlow Condensed', sans-serif; font-size: 30px; font-weight: 800; line-height: 1; }
+.gauge { height: 7px; background: var(--s3); border-radius: 4px; overflow: hidden; margin-top: 10px; }
+.gauge-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+.cover-num { font-family: 'Barlow Condensed', sans-serif; font-size: 30px; font-weight: 800; color: var(--green); line-height: 1; }
+.dash-hint { font-size: 10px; color: var(--muted); margin-top: 8px; line-height: 1.4; }
+.dist { background: var(--s1); border: 1px solid var(--bd); border-radius: 6px; padding: 18px 22px; margin-bottom: 8px; }
+.dist-row { display: grid; grid-template-columns: 150px 1fr 32px; align-items: center; gap: 12px; margin-bottom: 8px; }
+.dist-row:last-child { margin-bottom: 0; }
+.dist-name { font-size: 12px; color: var(--txt); text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dist-bar { height: 14px; background: var(--s3); border-radius: 3px; overflow: hidden; }
+.dist-bar-fill { height: 100%; border-radius: 3px; transition: width 0.6s ease; }
+.dist-val { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); text-align: right; }
+
+/* ── ATTACK FLOW ── */
+.flow { display: flex; align-items: stretch; gap: 0; overflow-x: auto; padding: 4px 2px 12px; margin-bottom: 8px; scrollbar-width: thin; scrollbar-color: var(--bd) transparent; }
+.flow-phase { flex-shrink: 0; background: var(--s1); border: 1px solid var(--bd); border-radius: 6px; padding: 10px 14px; text-align: center; cursor: pointer; transition: all 0.15s; min-width: 128px; }
+.flow-phase:hover { border-color: var(--blue-bright); background: var(--s2); transform: translateY(-2px); }
+.flow-risk { height: 3px; background: var(--bd); border-radius: 2px; margin-bottom: 8px; overflow: hidden; }
+.flow-risk-fill { height: 100%; border-radius: 2px; }
+.flow-idx { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: var(--blue-bright); letter-spacing: 1px; }
+.flow-name { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin: 3px 0; line-height: 1.3; }
+.flow-count { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 700; color: var(--txt); }
+.flow-arrow { flex-shrink: 0; display: flex; align-items: center; color: var(--bd); padding: 0 4px; }
+
+/* ── SIMULATION ── */
+.sim-bar { margin-bottom: 12px; }
+.btn-ghost { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--blue-bright); border: 1px solid rgba(37,99,235,0.4); border-radius: 6px; padding: 9px 18px; font-size: 13px; font-family: 'DM Sans', sans-serif; font-weight: 500; cursor: pointer; transition: all 0.15s; }
+.btn-ghost:hover { background: var(--blue-glow); border-color: var(--blue); }
+.sim-panel { display: none; }
+.sim-panel.show { display: block; }
+.sim-step { background: var(--s1); border: 1px solid var(--bd); border-left: 3px solid var(--blue); border-radius: 0 6px 6px 0; padding: 14px 18px; margin-bottom: 8px; display: flex; gap: 14px; align-items: flex-start; }
+.sim-num { font-family: 'Barlow Condensed', sans-serif; font-size: 26px; font-weight: 800; color: var(--blue-bright); line-height: 1; min-width: 30px; }
+.sim-tac { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--blue-bright); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; }
+.sim-action { font-size: 13px; color: var(--txt); font-weight: 500; }
+.sim-tech { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.sim-tech b { color: var(--blue-bright); font-family: 'JetBrains Mono', monospace; font-weight: 500; }
 
 /* ── EXPORT ── */
-.export-bar { display: flex; justify-content: flex-end; margin-bottom: 20px; }
+.export-bar { display: flex; justify-content: flex-end; gap: 8px; margin-bottom: 8px; }
 .btn-export { display: flex; align-items: center; gap: 8px; background: var(--blue); color: #fff; border: none; border-radius: 6px; padding: 10px 20px; font-size: 13px; font-family: 'DM Sans', sans-serif; font-weight: 500; cursor: pointer; transition: background 0.15s; }
 .btn-export:hover { background: var(--blue-dark); }
 
 /* ── TACTIC ── */
-.tactic-section { margin-bottom: 24px; border: 1px solid var(--bd); border-radius: 6px; overflow: hidden; scroll-margin-top: 72px; }
+.tactic-section { margin-bottom: 14px; border: 1px solid var(--bd); border-radius: 6px; overflow: hidden; scroll-margin-top: 72px; }
 .tactic-header { background: var(--s2); border-bottom: 1px solid var(--bd); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; transition: background 0.1s; }
 .tactic-header:hover { background: var(--s3); }
 .tactic-left { display: flex; align-items: center; gap: 12px; }
@@ -180,21 +166,44 @@ body::before {
 .tactic-section.collapsed .tactic-body { display: none; }
 
 /* ── TECH CARD ── */
-.tech-card { background: var(--s1); padding: 16px 20px; transition: background 0.1s; overflow: hidden; min-width: 0; }
+.tech-card { background: var(--s1); padding: 16px 20px; transition: background 0.1s; overflow: hidden; min-width: 0; cursor: pointer; position: relative; }
 .tech-card:hover { background: var(--s2); }
-.tech-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
-.tech-id { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--blue-bright); flex-shrink: 0; background: var(--blue-glow); padding: 2px 8px; border-radius: 3px; border: 1px solid rgba(37,99,235,0.2); }
-.tech-name { font-size: 13px; font-weight: 600; color: var(--txt); margin-bottom: 6px; line-height: 1.3; word-wrap: break-word; overflow-wrap: break-word; }
-.tech-desc { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 10px; word-wrap: break-word; overflow-wrap: break-word; }
-.tech-use { background: var(--s3); border-left: 2px solid var(--blue); padding: 8px 12px; font-size: 11px; color: var(--txt); opacity: 0.85; line-height: 1.5; border-radius: 0 3px 3px 0; margin-bottom: 10px; word-wrap: break-word; overflow-wrap: break-word; }
-.tech-use-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--blue-bright); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
-.mitigations-toggle { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--green); cursor: pointer; background: none; border: none; padding: 0; display: flex; align-items: center; gap: 5px; }
-.mitigations-toggle:hover { opacity: 0.7; }
-.mitigations-body { display: none; margin-top: 10px; border-top: 1px solid var(--bd); padding-top: 10px; }
-.mitigations-body.open { display: block; }
-.mitigation-item { background: rgba(16,185,129,0.05); border: 1px solid rgba(16,185,129,0.15); border-radius: 4px; padding: 8px 12px; margin-bottom: 6px; }
-.mit-name { font-size: 12px; font-weight: 600; color: var(--green); margin-bottom: 4px; word-wrap: break-word; }
-.mit-desc { font-size: 11px; color: var(--muted); line-height: 1.5; word-wrap: break-word; overflow-wrap: break-word; }
+.tech-card::after { content: '↗'; position: absolute; top: 14px; right: 16px; color: var(--muted); font-size: 13px; opacity: 0; transition: opacity 0.15s; }
+.tech-card:hover::after { opacity: 0.6; }
+.tech-top { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+.tech-id { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--blue-bright); background: var(--blue-glow); padding: 2px 8px; border-radius: 3px; border: 1px solid rgba(37,99,235,0.2); }
+.tech-sub { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: var(--purple); border: 1px solid rgba(139,92,246,0.3); padding: 1px 6px; border-radius: 3px; }
+.tech-name { font-size: 13px; font-weight: 600; color: var(--txt); margin-bottom: 6px; line-height: 1.3; word-wrap: break-word; padding-right: 16px; }
+.tech-desc { font-size: 12px; color: var(--muted); line-height: 1.55; margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.tech-meta { display: flex; flex-wrap: wrap; gap: 6px; }
+.meta-badge { font-family: 'JetBrains Mono', monospace; font-size: 9px; padding: 2px 8px; border-radius: 99px; display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--bd); color: var(--muted); }
+.meta-badge.g { color: var(--green); border-color: rgba(16,185,129,0.25); }
+.meta-badge.b { color: var(--blue-bright); border-color: rgba(37,99,235,0.25); }
+.meta-badge.a { color: var(--amber); border-color: rgba(245,158,11,0.25); }
+
+/* ── MODAL ── */
+.modal-overlay { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(2,6,14,0.78); backdrop-filter: blur(4px); padding: 40px 20px; overflow-y: auto; }
+.modal-overlay.show { display: flex; align-items: flex-start; justify-content: center; }
+.modal-card { background: var(--s1); border: 1px solid var(--bd); border-top: 3px solid var(--blue); border-radius: 8px; width: 100%; max-width: 760px; margin: auto; box-shadow: 0 24px 60px rgba(0,0,0,0.5); }
+.modal-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 22px 26px 16px; border-bottom: 1px solid var(--bd); }
+.modal-close { background: var(--s3); border: 1px solid var(--bd); color: var(--muted); width: 30px; height: 30px; border-radius: 6px; cursor: pointer; font-size: 16px; flex-shrink: 0; transition: all 0.15s; }
+.modal-close:hover { color: var(--red); border-color: var(--red); }
+.modal-body { padding: 20px 26px 26px; }
+.modal-block { margin-bottom: 20px; }
+.modal-block:last-child { margin-bottom: 0; }
+.modal-block-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--blue-bright); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.modal-text { font-size: 13px; color: var(--txt); opacity: 0.88; line-height: 1.65; word-wrap: break-word; }
+.use-box { background: var(--s3); border-left: 2px solid var(--blue); padding: 10px 14px; border-radius: 0 4px 4px 0; font-size: 13px; line-height: 1.6; }
+.det-strategy { border: 1px solid var(--bd); border-radius: 6px; padding: 12px 14px; margin-bottom: 8px; background: var(--s2); }
+.det-strategy-name { font-size: 12px; font-weight: 600; color: var(--txt); margin-bottom: 8px; }
+.det-analytic { font-size: 12px; color: var(--muted); line-height: 1.55; padding: 8px 0; border-top: 1px dashed var(--bd); }
+.det-analytic:first-of-type { border-top: none; }
+.log-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+.log-chip { font-family: 'JetBrains Mono', monospace; font-size: 9px; padding: 2px 7px; border-radius: 4px; background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.3); color: var(--purple); }
+.mit-item { background: rgba(16,185,129,0.05); border: 1px solid rgba(16,185,129,0.15); border-radius: 4px; padding: 9px 13px; margin-bottom: 6px; }
+.mit-name { font-size: 12px; font-weight: 600; color: var(--green); margin-bottom: 3px; }
+.mit-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
+.empty-note { font-size: 12px; color: var(--muted); font-style: italic; }
 
 /* ── ERROR ── */
 .error-box { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); border-radius: 6px; padding: 20px 24px; margin: 20px 0; font-size: 13px; color: var(--red); display: none; }
@@ -209,11 +218,12 @@ body::before {
 
 @media print {
   * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-  .nav, .hero, .export-bar, .footer { display: none !important; }
+  .nav, .hero, .export-bar, .footer, .sim-bar, .tech-card::after, .modal-overlay { display: none !important; }
   body { padding: 0; }
   .results { display: block !important; padding: 20px; }
   .tactic-section.collapsed .tactic-body { display: grid !important; }
-  @page { margin: 0; size: A4; }
+  .sim-panel { display: block !important; }
+  @page { margin: 12mm; size: A4; }
 }
 </style>
 </head>
@@ -226,9 +236,7 @@ body::before {
     <span class="nav-sub">TTP MAPPER</span>
   </div>
   <div class="nav-actions">
-    <button class="nav-toggle" id="btnTheme" onclick="toggleTheme()" title="Alternar tema">
-      <span id="themeIcon">☀️</span>
-    </button>
+    <button class="nav-toggle" id="btnTheme" onclick="toggleTheme()" title="Alternar tema"><span id="themeIcon">☀️</span></button>
     <span class="nav-tag">MITRE ATT&CK</span>
   </div>
 </nav>
@@ -266,17 +274,39 @@ body::before {
 
   <div class="results" id="results">
     <div class="actor-header" id="actorHeader"></div>
+    <div class="profile" id="profile"></div>
+
+    <div class="sec-title">Dashboard de Risco <span class="sec-sub">// visão geral</span></div>
+    <div class="dash-grid" id="dashGrid"></div>
+    <div class="dist" id="dist"></div>
+
+    <div class="sec-title">Cadeia de Ataque <span class="sec-sub">// progressão por tática (MITRE)</span></div>
+    <div class="flow" id="flow"></div>
+
+    <div class="sec-title">Simulação de Campanha <span class="sec-sub">// cenário gerado a partir das TTPs</span></div>
+    <div class="sim-bar">
+      <button class="btn-ghost" id="btnSim" onclick="toggleSim()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        <span id="simBtnLabel">Gerar simulação</span>
+      </button>
+    </div>
+    <div class="sim-panel" id="simPanel"></div>
+
+    <div class="sec-title">Técnicas por Tática <span class="sec-sub">// clique numa técnica para ver detalhes</span></div>
     <div class="export-bar">
       <button class="btn-export" onclick="window.print()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
         <span>Exportar PDF</span>
       </button>
     </div>
-    <div class="killchain" id="killchain"></div>
     <div id="tacticsContainer"></div>
-    <div style="height:60vh"></div>
+    <div style="height:40vh"></div>
   </div>
 </main>
+
+<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-card" id="modalCard"></div>
+</div>
 
 <footer class="footer">
   <span>VMBLUE TTP Mapper — Powered by MITRE ATT&CK</span>
@@ -286,26 +316,13 @@ body::before {
 <script>
 // ── CONFIG ──
 const WORKER_URL = 'https://mitre-api.vmblue.workers.dev'
-
-// ── ESTADO ──
 let currentTheme = 'dark'
 
-// ── TEXTOS DE UI (PT-BR) ──
 const UI = {
   loading: 'Consultando MITRE ATT&CK...',
-  techniques: 'Técnicas',
-  tactics: 'Táticas',
-  mitreId: 'MITRE ID',
-  howUses: '// Como usa',
-  mitigations: 'mitigação',
-  mitigations_pl: 'mitigações',
-  apt: 'APT / Grupo',
-  malware: 'Malware / RaaS',
-  tool: 'Ferramenta',
   risk: { critical: 'Crítico', high: 'Alto', medium: 'Médio', low: 'Baixo' }
 }
 
-// ── TACTIC LABELS (PT-BR) ──
 const TACTIC_LABELS = {
   'reconnaissance': 'Reconhecimento',
   'resource-development': 'Desenvolvimento de Recursos',
@@ -313,7 +330,8 @@ const TACTIC_LABELS = {
   'execution': 'Execução',
   'persistence': 'Persistência',
   'privilege-escalation': 'Elevação de Privilégio',
-  'defense-evasion': 'Evasão de Defesa',
+  'stealth': 'Furtividade',
+  'defense-impairment': 'Comprometimento de Defesas',
   'credential-access': 'Acesso a Credenciais',
   'discovery': 'Descoberta',
   'lateral-movement': 'Movimento Lateral',
@@ -325,11 +343,44 @@ const TACTIC_LABELS = {
 
 const TACTIC_ORDER = [
   'reconnaissance','resource-development','initial-access','execution',
-  'persistence','privilege-escalation','defense-evasion','credential-access',
-  'discovery','lateral-movement','collection','command-and-control','exfiltration','impact'
+  'persistence','privilege-escalation','stealth','defense-impairment',
+  'credential-access','discovery','lateral-movement','collection',
+  'command-and-control','exfiltration','impact'
 ]
 
+// Verbos para a simulação de campanha
+const SIM_VERBS = {
+  'reconnaissance': 'Realiza reconhecimento sobre o alvo',
+  'resource-development': 'Prepara a infraestrutura do ataque',
+  'initial-access': 'Obtém acesso inicial ao ambiente',
+  'execution': 'Executa código malicioso',
+  'persistence': 'Estabelece persistência no host',
+  'privilege-escalation': 'Eleva privilégios',
+  'stealth': 'Evade defesas e oculta a atividade',
+  'defense-impairment': 'Compromete os mecanismos de defesa',
+  'credential-access': 'Coleta credenciais',
+  'discovery': 'Mapeia o ambiente interno',
+  'lateral-movement': 'Move-se lateralmente pela rede',
+  'collection': 'Coleta dados de interesse',
+  'command-and-control': 'Estabelece canal de comando e controle (C2)',
+  'exfiltration': 'Exfiltra os dados coletados',
+  'impact': 'Causa impacto (criptografia, destruição, extorsão)'
+}
+
+// ── ESTADO DE RENDER ──
+let TECH_INDEX = {}      // mitre_id||id -> techData
+let SIM_CACHE = null
+
 // ── HELPERS ──
+function escapeHtml(str){
+  if(str == null) return ''
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')
+}
+function cleanText(text){
+  if(!text) return ''
+  const c = text.replace(/\[([^\]]+)\]\([^)]+\)/g,'$1').replace(/\(Citation:[^)]+\)/g,'').replace(/\[\[([^\]]+)\]\]/g,'$1').replace(/\s+/g,' ').trim()
+  return escapeHtml(c)
+}
 function riskColor(s){ return s>=80?'#EF4444':s>=50?'#F59E0B':s>=25?'#3B82F6':'#10B981' }
 function riskLabel(s){
   const t = UI.risk
@@ -338,29 +389,8 @@ function riskLabel(s){
   if(s>=25) return {label:t.medium,color:'#3B82F6',bg:'rgba(59,130,246,0.1)',border:'rgba(59,130,246,0.3)'}
   return {label:t.low,color:'#10B981',bg:'rgba(16,185,129,0.1)',border:'rgba(16,185,129,0.3)'}
 }
-
-// Escapa caracteres especiais para evitar quebra do HTML injetado via innerHTML
-function escapeHtml(str){
-  if(str == null) return ''
-  return String(str)
-    .replace(/&/g,'&amp;')
-    .replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;')
-    .replace(/'/g,'&#39;')
-}
-
-// Limpa markdown e citações do texto MITRE, depois escapa o HTML
-function cleanText(text) {
-  if(!text) return ''
-  const cleaned = text
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')   // [texto](url) → texto
-    .replace(/\(Citation:[^)]+\)/g, '')          // (Citation: xxx) → remove
-    .replace(/\[\[([^\]]+)\]\]/g, '$1')          // [[texto]] → texto
-    .replace(/\s+/g, ' ')                        // espaços múltiplos
-    .trim()
-  return escapeHtml(cleaned)                      // escapa < > & " ' por último
-}
+function techKey(tech){ return tech.mitre_id || tech.id }
+function fmtDate(s){ if(!s) return '—'; try { return new Date(s).toLocaleDateString('pt-BR') } catch(e){ return '—' } }
 
 // ── TEMA ──
 function toggleTheme(){
@@ -370,156 +400,321 @@ function toggleTheme(){
 }
 
 // ── SEARCH ──
-document.getElementById('searchInput').addEventListener('keydown', e => {
-  if(e.key === 'Enter') doSearch()
-})
+document.getElementById('searchInput').addEventListener('keydown', e => { if(e.key === 'Enter') doSearch() })
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModal() })
 
-function quickSearch(name){
-  document.getElementById('searchInput').value = name
-  doSearch()
-}
+function quickSearch(name){ document.getElementById('searchInput').value = name; doSearch() }
 
 async function doSearch(){
   const q = document.getElementById('searchInput').value.trim()
   if(!q) return
-
   showLoading(UI.loading)
   document.getElementById('results').classList.remove('show')
   document.getElementById('errorBox').classList.remove('show')
-
-  const btn = document.getElementById('searchBtn')
-  btn.disabled = true
-
+  const btn = document.getElementById('searchBtn'); btn.disabled = true
   try {
-    // Busca na API do Worker
     const searchRes = await fetch(`${WORKER_URL}/api/search?q=${encodeURIComponent(q)}`)
     const searchData = await searchRes.json()
-
-    if(!Array.isArray(searchData) || searchData.length === 0) {
-      throw new Error('Grupo não encontrado no MITRE ATT&CK')
-    }
-
+    if(!Array.isArray(searchData) || searchData.length === 0) throw new Error('Grupo não encontrado no MITRE ATT&CK')
     const actor = searchData[0]
     const detailRes = await fetch(`${WORKER_URL}/api/actor/${encodeURIComponent(actor.id)}`)
     const detailData = await detailRes.json()
-
     if(detailData.error) throw new Error(detailData.error)
-
     renderResults(detailData)
-
-  } catch(err) {
-    showError(err.message)
-  }
-
+  } catch(err){ showError(err.message) }
   btn.disabled = false
 }
 
-// ── RENDER ──
-function renderResults(data){
-  const { actor, tactics } = data
-  const t = UI
-  const tacticLabels = TACTIC_LABELS
-
-  // Filtra e ordena táticas
-  const tacticsFiltered = {}
+// ── COLETA DE TÉCNICAS ÚNICAS ──
+function collectTactics(tactics){
+  const filtered = {}
   TACTIC_ORDER.forEach(slug => {
     if(tactics[slug] && tactics[slug].techniques?.length > 0){
-      tacticsFiltered[slug] = { ...tactics[slug], label: tacticLabels[slug] || tactics[slug].label }
+      filtered[slug] = { ...tactics[slug], label: TACTIC_LABELS[slug] || tactics[slug].label }
     }
   })
-
-  // Risk scores
-  const maxT = Math.max(...Object.values(tacticsFiltered).map(t=>t.techniques.length), 1)
-  Object.keys(tacticsFiltered).forEach(slug => {
-    tacticsFiltered[slug].risk_score = Math.round((tacticsFiltered[slug].techniques.length / maxT) * 100)
+  const maxT = Math.max(...Object.values(filtered).map(t=>t.techniques.length), 1)
+  Object.keys(filtered).forEach(slug => {
+    filtered[slug].risk_score = Math.round((filtered[slug].techniques.length / maxT) * 100)
   })
+  return filtered
+}
+function uniqueTechs(tactics){
+  const map = {}
+  Object.values(tactics).forEach(t => t.techniques.forEach(tech => { map[techKey(tech)] = tech }))
+  return Object.values(map)
+}
 
-  const totalTechs = Object.values(tacticsFiltered).reduce((a,t)=>a+t.techniques.length, 0)
-  const isAPT = actor.type === 'intrusion-set'
-  const typeLabel = isAPT ? t.apt : actor.type==='malware' ? t.malware : t.tool
-  const cleanDesc = cleanText(actor.description)
+// ── RENDER PRINCIPAL ──
+function renderResults(data){
+  const { actor } = data
+  const tactics = collectTactics(data.tactics)
+  const techs = uniqueTechs(tactics)
+  TECH_INDEX = {}
+  techs.forEach(t => { TECH_INDEX[techKey(t)] = t })
+  SIM_CACHE = null
+  document.getElementById('simPanel').classList.remove('show')
+  document.getElementById('simBtnLabel').textContent = 'Gerar simulação'
 
-  // Actor header
-  document.getElementById('actorHeader').innerHTML = `
-    <div>
-      <span class="actor-type-badge ${isAPT?'badge-apt':'badge-mal'}">${typeLabel}</span>
-      <div class="actor-name">${escapeHtml(actor.name)}</div>
-      ${actor.aliases?.length ? `<div class="actor-aliases">// ${escapeHtml(actor.aliases.join(' · '))}</div>` : ''}
-      <div class="actor-desc">${cleanDesc}</div>
-    </div>
-    <div class="actor-stats">
-      <div class="stat-box"><div class="stat-num">${totalTechs}</div><div class="stat-label">${t.techniques}</div></div>
-      <div class="stat-box"><div class="stat-num">${Object.keys(tacticsFiltered).length}</div><div class="stat-label">${t.tactics}</div></div>
-      ${actor.mitre_id ? `<div class="stat-box"><div class="stat-num" style="font-size:18px">${escapeHtml(actor.mitre_id)}</div><div class="stat-label">${t.mitreId}</div></div>` : ''}
-    </div>
-  `
-
-  // Kill chain
-  document.getElementById('killchain').innerHTML = Object.entries(tacticsFiltered).map(([slug, tac]) => {
-    const risk = tac.risk_score || 0
-    return `<div class="kc-phase" onclick="scrollToTactic('${slug}')">
-      <div class="kc-risk"><div class="kc-risk-fill" style="width:${risk}%;background:${riskColor(risk)}"></div></div>
-      <div class="kc-name">${tac.label}</div>
-      <div class="kc-count">${tac.techniques.length}</div>
-    </div>`
-  }).join('')
-
-  // Tactics + techniques
-  document.getElementById('tacticsContainer').innerHTML = Object.entries(tacticsFiltered).map(([slug, tactic], idx) => {
-    const risk = riskLabel(tactic.risk_score || 0)
-    const techs = (tactic.techniques || []).map(tech => {
-      const cleanDesc2 = cleanText(tech.description)
-      const cleanUse = cleanText(tech.use)
-      const mits = tech.mitigations || []
-      const mitLabel = mits.length === 1 ? `1 ${t.mitigations}` : `${mits.length} ${t.mitigations_pl}`
-      return `
-        <div class="tech-card">
-          <div class="tech-top"><span class="tech-id">${escapeHtml(tech.mitre_id||'')}</span></div>
-          <div class="tech-name">${escapeHtml(tech.name)}</div>
-          <div class="tech-desc">${cleanDesc2}</div>
-          ${cleanUse ? `<div class="tech-use"><div class="tech-use-label">${t.howUses}</div>${cleanUse}</div>` : ''}
-          ${mits.length ? `
-            <button class="mitigations-toggle" onclick="this.nextElementSibling.classList.toggle('open')">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-              ${mitLabel}
-            </button>
-            <div class="mitigations-body">
-              ${mits.map(m=>`<div class="mitigation-item"><div class="mit-name">${escapeHtml(m.name)}</div><div class="mit-desc">${cleanText(m.description)}</div></div>`).join('')}
-            </div>
-          ` : ''}
-        </div>`
-    }).join('')
-
-    return `<div class="tactic-section" id="tactic-${slug}">
-      <div class="tactic-header" onclick="this.parentElement.classList.toggle('collapsed')">
-        <div class="tactic-left">
-          <span class="tactic-idx">${String(idx+1).padStart(2,'0')}</span>
-          <span class="tactic-name-el">${tactic.label}</span>
-        </div>
-        <div class="tactic-right">
-          <span class="tactic-count">${tactic.techniques.length} ${tactic.techniques.length!==1?t.techniques.toLowerCase():t.techniques.toLowerCase().replace(/s$/,'')}</span>
-          <span class="tactic-risk-pill" style="background:${risk.bg};color:${risk.color};border:1px solid ${risk.border}">${risk.label}</span>
-          <svg class="tactic-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>
-      </div>
-      <div class="tactic-body">${techs}</div>
-    </div>`
-  }).join('')
+  renderHeader(actor, tactics, techs)
+  renderProfile(actor, techs)
+  renderDashboard(actor, tactics, techs)
+  renderFlow(tactics)
+  renderTactics(tactics)
 
   hideLoading()
   document.getElementById('results').classList.add('show')
   window.scrollTo({top:0,behavior:'smooth'})
 }
 
+function renderHeader(actor, tactics, techs){
+  const isAPT = actor.type === 'intrusion-set'
+  const typeLabel = isAPT ? 'APT / Grupo' : actor.type==='malware' ? 'Malware / RaaS' : 'Ferramenta'
+  document.getElementById('actorHeader').innerHTML = `
+    <div>
+      <span class="actor-type-badge ${isAPT?'badge-apt':'badge-mal'}">${escapeHtml(typeLabel)}</span>
+      <div class="actor-name">${escapeHtml(actor.name)}</div>
+      ${actor.aliases?.length ? `<div class="actor-aliases">// ${escapeHtml(actor.aliases.join(' · '))}</div>` : ''}
+      <div class="actor-desc">${cleanText(actor.description)}</div>
+    </div>
+    <div class="actor-stats">
+      <div class="stat-box"><div class="stat-num">${techs.length}</div><div class="stat-label">Técnicas</div></div>
+      <div class="stat-box"><div class="stat-num">${Object.keys(tactics).length}</div><div class="stat-label">Táticas</div></div>
+      ${actor.mitre_id ? `<div class="stat-box"><div class="stat-num" style="font-size:18px">${escapeHtml(actor.mitre_id)}</div><div class="stat-label">MITRE ID</div></div>` : ''}
+    </div>`
+}
+
+// ── PERFIL ──
+function renderProfile(actor, techs){
+  const isAPT = actor.type === 'intrusion-set'
+  const platforms = actor.platforms?.length ? actor.platforms : [...new Set(techs.flatMap(t=>t.platforms||[]))]
+  const swList = isAPT ? (actor.software || []) : (actor.used_by || [])
+  const swLabel = isAPT ? 'Software / Malware utilizado' : 'Grupos que utilizam'
+  const items = []
+
+  items.push(`<div class="prof-item"><div class="prof-label">Plataformas-alvo</div><div class="chips">${
+    platforms.length ? platforms.map(p=>`<span class="chip blue">${escapeHtml(p)}</span>`).join('') : '<span class="empty-note">—</span>'
+  }</div></div>`)
+
+  items.push(`<div class="prof-item"><div class="prof-label">${escapeHtml(swLabel)}</div><div class="chips">${
+    swList.length ? swList.slice(0,14).map(s=>`<span class="chip ${s.type==='intrusion-set'?'blue':'red'}">${escapeHtml(s.name)}${s.mitre_id?` <span style="opacity:.6">${escapeHtml(s.mitre_id)}</span>`:''}</span>`).join('') : '<span class="empty-note">Nenhum mapeado no MITRE</span>'
+  }</div></div>`)
+
+  if(actor.aliases?.length){
+    items.push(`<div class="prof-item"><div class="prof-label">Aliases</div><div class="chips">${actor.aliases.map(a=>`<span class="chip">${escapeHtml(a)}</span>`).join('')}</div></div>`)
+  }
+  items.push(`<div class="prof-item"><div class="prof-label">Registro MITRE</div><div class="prof-value" style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted)">
+    Criado: ${fmtDate(actor.created)} · Atualizado: ${fmtDate(actor.modified)}</div></div>`)
+  if(actor.contributors?.length){
+    items.push(`<div class="prof-item"><div class="prof-label">Contribuidores</div><div class="prof-value" style="font-size:12px;color:var(--muted)">${escapeHtml(actor.contributors.join(', '))}</div></div>`)
+  }
+  document.getElementById('profile').innerHTML = items.join('')
+}
+
+// ── DASHBOARD ──
+function computeRisk(tactics){
+  const tacticCount = Object.keys(tactics).length
+  const hasImpact = !!tactics['impact']
+  const hasExfil = !!tactics['exfiltration']
+  const score = Math.min(100, Math.round((tacticCount/15)*70 + (hasImpact?15:0) + (hasExfil?15:0)))
+  return { score, ...riskLabel(score) }
+}
+function renderDashboard(actor, tactics, techs){
+  const risk = computeRisk(tactics)
+  const withDet = techs.filter(t => (t.detection && t.detection.length) || (t.log_sources && t.log_sources.length)).length
+  const cover = techs.length ? Math.round((withDet/techs.length)*100) : 0
+  const platforms = actor.platforms?.length ? actor.platforms : [...new Set(techs.flatMap(t=>t.platforms||[]))]
+
+  document.getElementById('dashGrid').innerHTML = `
+    <div class="dash-card">
+      <div class="prof-label">Nível de risco do grupo</div>
+      <div class="risk-big" style="color:${risk.color}">${risk.label}</div>
+      <div class="gauge"><div class="gauge-fill" style="width:${risk.score}%;background:${risk.color}"></div></div>
+      <div class="dash-hint">Baseado na amplitude de táticas + presença de impacto/exfiltração.</div>
+    </div>
+    <div class="dash-card">
+      <div class="prof-label">Cobertura de detecção (MITRE)</div>
+      <div class="cover-num">${cover}%</div>
+      <div class="gauge"><div class="gauge-fill" style="width:${cover}%;background:var(--green)"></div></div>
+      <div class="dash-hint">${withDet} de ${techs.length} técnicas têm estratégia de detecção/log source no MITRE.</div>
+    </div>
+    <div class="dash-card">
+      <div class="prof-label">Superfície de ataque</div>
+      <div class="chips" style="margin-top:4px">${platforms.length?platforms.map(p=>`<span class="chip blue">${escapeHtml(p)}</span>`).join(''):'<span class="empty-note">—</span>'}</div>
+      <div class="dash-hint">Cobertura defensiva da sua organização requer o inventário de detecções do seu SOC (entrada externa).</div>
+    </div>`
+
+  // distribuição por tática
+  const entries = Object.entries(tactics).sort((a,b)=>b[1].techniques.length - a[1].techniques.length)
+  const max = Math.max(...entries.map(e=>e[1].techniques.length), 1)
+  document.getElementById('dist').innerHTML = `
+    <div class="prof-label" style="margin-bottom:14px">Táticas com mais técnicas mapeadas</div>
+    ${entries.map(([slug,t])=>{
+      const w = Math.round((t.techniques.length/max)*100)
+      return `<div class="dist-row">
+        <div class="dist-name">${escapeHtml(t.label)}</div>
+        <div class="dist-bar"><div class="dist-bar-fill" style="width:${w}%;background:${riskColor(t.risk_score)}"></div></div>
+        <div class="dist-val">${t.techniques.length}</div>
+      </div>`
+    }).join('')}`
+}
+
+// ── CADEIA DE ATAQUE ──
+function renderFlow(tactics){
+  const entries = Object.entries(tactics)
+  const arrow = `<div class="flow-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>`
+  document.getElementById('flow').innerHTML = entries.map(([slug,t],i)=>{
+    const r = t.risk_score || 0
+    return `<div class="flow-phase" onclick="scrollToTactic('${slug}')">
+      <div class="flow-risk"><div class="flow-risk-fill" style="width:${r}%;background:${riskColor(r)}"></div></div>
+      <div class="flow-idx">${String(i+1).padStart(2,'0')}</div>
+      <div class="flow-name">${escapeHtml(t.label)}</div>
+      <div class="flow-count">${t.techniques.length}</div>
+    </div>`
+  }).join(arrow)
+}
+
+// ── SIMULAÇÃO ──
+function toggleSim(){
+  const panel = document.getElementById('simPanel')
+  const label = document.getElementById('simBtnLabel')
+  if(panel.classList.contains('show')){
+    panel.classList.remove('show'); label.textContent = 'Gerar simulação'; return
+  }
+  if(!SIM_CACHE){
+    const tactics = window.__tactics || {}
+    let n = 0
+    const html = Object.entries(tactics).map(([slug,t])=>{
+      const tech = t.techniques[0]
+      if(!tech) return ''
+      n++
+      const use = cleanText(tech.use)
+      return `<div class="sim-step">
+        <div class="sim-num">${n}</div>
+        <div>
+          <div class="sim-tac">${escapeHtml(t.label)}</div>
+          <div class="sim-action">${escapeHtml(SIM_VERBS[slug]||'Executa técnica')}</div>
+          <div class="sim-tech"><b>${escapeHtml(tech.mitre_id||'')}</b> ${escapeHtml(tech.name)}${use?` — ${use.length>160?use.slice(0,160)+'…':use}`:''}</div>
+        </div>
+      </div>`
+    }).join('')
+    SIM_CACHE = `<div class="dash-hint" style="margin-bottom:10px">Cenário ilustrativo encadeando uma técnica representativa por tática, na ordem do kill chain. Para treinamento — não representa uma campanha específica.</div>${html}`
+  }
+  panel.innerHTML = SIM_CACHE
+  panel.classList.add('show')
+  label.textContent = 'Ocultar simulação'
+}
+
+// ── TÉCNICAS POR TÁTICA ──
+function renderTactics(tactics){
+  window.__tactics = tactics
+  document.getElementById('tacticsContainer').innerHTML = Object.entries(tactics).map(([slug, tactic], idx) => {
+    const risk = riskLabel(tactic.risk_score || 0)
+    const cards = (tactic.techniques || []).map(tech => {
+      const key = techKey(tech)
+      const nMit = (tech.mitigations||[]).length
+      const nLog = (tech.log_sources||[]).length
+      const nTool = (tech.tools||[]).length
+      return `<div class="tech-card" onclick="openModal('${escapeHtml(key)}')">
+        <div class="tech-top">
+          <span class="tech-id">${escapeHtml(tech.mitre_id||'')}</span>
+          ${tech.is_subtechnique?'<span class="tech-sub">SUB</span>':''}
+        </div>
+        <div class="tech-name">${escapeHtml(tech.name)}</div>
+        <div class="tech-desc">${cleanText(tech.description)}</div>
+        <div class="tech-meta">
+          ${nMit?`<span class="meta-badge g">🛡 ${nMit} mitig.</span>`:''}
+          ${nLog?`<span class="meta-badge b">🔍 detecção</span>`:''}
+          ${nTool?`<span class="meta-badge a">🧰 ${nTool} ferr.</span>`:''}
+          ${(tech.platforms||[]).slice(0,3).map(p=>`<span class="meta-badge">${escapeHtml(p)}</span>`).join('')}
+        </div>
+      </div>`
+    }).join('')
+
+    const techWord = tactic.techniques.length!==1?'técnicas':'técnica'
+    return `<div class="tactic-section" id="tactic-${slug}">
+      <div class="tactic-header" onclick="this.parentElement.classList.toggle('collapsed')">
+        <div class="tactic-left">
+          <span class="tactic-idx">${String(idx+1).padStart(2,'0')}</span>
+          <span class="tactic-name-el">${escapeHtml(tactic.label)}</span>
+        </div>
+        <div class="tactic-right">
+          <span class="tactic-count">${tactic.techniques.length} ${techWord}</span>
+          <span class="tactic-risk-pill" style="background:${risk.bg};color:${risk.color};border:1px solid ${risk.border}">${risk.label}</span>
+          <svg class="tactic-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      <div class="tactic-body">${cards}</div>
+    </div>`
+  }).join('')
+}
+
 function scrollToTactic(slug){
   const el = document.getElementById('tactic-'+slug)
   if(!el) return
   el.classList.remove('collapsed')
-  requestAnimationFrame(() => {
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  })
+  requestAnimationFrame(()=> el.scrollIntoView({ behavior:'smooth', block:'start' }))
 }
 
+// ── MODAL DE DETALHE ──
+function openModal(key){
+  const tech = TECH_INDEX[key]
+  if(!tech) return
+  const platforms = (tech.platforms||[]).map(p=>`<span class="chip blue">${escapeHtml(p)}</span>`).join('')
+  const tools = (tech.tools||[]).map(t=>`<span class="chip red">${escapeHtml(t)}</span>`).join('')
+
+  let detHtml = ''
+  if(tech.detection && tech.detection.length){
+    detHtml = tech.detection.map(d=>`
+      <div class="det-strategy">
+        <div class="det-strategy-name">${escapeHtml(d.strategy)}</div>
+        ${(d.analytics||[]).map(a=>`
+          <div class="det-analytic">
+            ${cleanText(a.description)}
+            ${(a.log_sources||[]).length?`<div class="log-chips">${a.log_sources.map(l=>`<span class="log-chip">${escapeHtml(l)}</span>`).join('')}</div>`:''}
+          </div>`).join('')}
+      </div>`).join('')
+  } else if((tech.log_sources||[]).length){
+    detHtml = `<div class="log-chips">${tech.log_sources.map(l=>`<span class="log-chip">${escapeHtml(l)}</span>`).join('')}</div>`
+  } else {
+    detHtml = '<div class="empty-note">Sem estratégia de detecção registrada no MITRE para esta técnica.</div>'
+  }
+
+  const mitHtml = (tech.mitigations||[]).length
+    ? tech.mitigations.map(m=>`<div class="mit-item"><div class="mit-name">${escapeHtml(m.name)}</div><div class="mit-desc">${cleanText(m.description)}</div></div>`).join('')
+    : '<div class="empty-note">Nenhuma mitigação mapeada.</div>'
+
+  const attackUrl = tech.mitre_id ? `https://attack.mitre.org/techniques/${tech.mitre_id.replace('.', '/')}/` : null
+
+  document.getElementById('modalCard').innerHTML = `
+    <div class="modal-head">
+      <div>
+        <div class="tech-top" style="margin-bottom:6px">
+          <span class="tech-id">${escapeHtml(tech.mitre_id||'')}</span>
+          ${tech.is_subtechnique?'<span class="tech-sub">SUBTÉCNICA</span>':''}
+        </div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:700;letter-spacing:.5px;line-height:1.05">${escapeHtml(tech.name)}</div>
+        ${platforms?`<div class="chips" style="margin-top:10px">${platforms}</div>`:''}
+      </div>
+      <button class="modal-close" onclick="closeModal()" aria-label="Fechar">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-block"><div class="modal-block-label">Descrição</div><div class="modal-text">${cleanText(tech.description)}</div></div>
+      ${cleanText(tech.use)?`<div class="modal-block"><div class="modal-block-label">Como o grupo utiliza</div><div class="use-box modal-text">${cleanText(tech.use)}</div></div>`:''}
+      ${tools?`<div class="modal-block"><div class="modal-block-label">🧰 Ferramentas associadas</div><div class="chips">${tools}</div></div>`:''}
+      <div class="modal-block"><div class="modal-block-label">🔍 Detecção & Logs</div>${detHtml}</div>
+      <div class="modal-block"><div class="modal-block-label">🛡 Mitigações</div>${mitHtml}</div>
+      ${attackUrl?`<div class="modal-block"><a href="${attackUrl}" target="_blank" rel="noopener" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--blue-bright);text-decoration:none">↗ Ver no MITRE ATT&CK</a></div>`:''}
+    </div>`
+  document.getElementById('modal').classList.add('show')
+  document.body.style.overflow = 'hidden'
+}
+function closeModal(){
+  document.getElementById('modal').classList.remove('show')
+  document.body.style.overflow = ''
+}
+
+// ── ESTADO/UI ──
 function showLoading(text){
   document.getElementById('loadingText').textContent = text || '...'
   document.getElementById('loading').classList.add('show')
