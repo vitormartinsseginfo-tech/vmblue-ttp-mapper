@@ -386,15 +386,27 @@ function riskLabel(s){
   return {label:t.low,color:'#10B981',bg:'rgba(16,185,129,0.1)',border:'rgba(16,185,129,0.3)'}
 }
 
-// Limpa markdown e citações do texto MITRE
+// Escapa caracteres especiais para evitar quebra do HTML injetado via innerHTML
+function escapeHtml(str){
+  if(str == null) return ''
+  return String(str)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;')
+}
+
+// Limpa markdown e citações do texto MITRE, depois escapa o HTML
 function cleanText(text) {
   if(!text) return ''
-  return text
+  const cleaned = text
     .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')   // [texto](url) → texto
     .replace(/\(Citation:[^)]+\)/g, '')          // (Citation: xxx) → remove
     .replace(/\[\[([^\]]+)\]\]/g, '$1')          // [[texto]] → texto
     .replace(/\s+/g, ' ')                        // espaços múltiplos
     .trim()
+  return escapeHtml(cleaned)                      // escapa < > & " ' por último
 }
 
 // ── TEMA ──
@@ -499,14 +511,14 @@ function renderResults(data){
   document.getElementById('actorHeader').innerHTML = `
     <div>
       <span class="actor-type-badge ${isAPT?'badge-apt':'badge-mal'}">${typeLabel}</span>
-      <div class="actor-name">${actor.name}</div>
-      ${actor.aliases?.length ? `<div class="actor-aliases">// ${actor.aliases.join(' · ')}</div>` : ''}
+      <div class="actor-name">${escapeHtml(actor.name)}</div>
+      ${actor.aliases?.length ? `<div class="actor-aliases">// ${escapeHtml(actor.aliases.join(' · '))}</div>` : ''}
       <div class="actor-desc">${cleanDesc}</div>
     </div>
     <div class="actor-stats">
       <div class="stat-box"><div class="stat-num">${totalTechs}</div><div class="stat-label">${t.techniques}</div></div>
       <div class="stat-box"><div class="stat-num">${Object.keys(tacticsFiltered).length}</div><div class="stat-label">${t.tactics}</div></div>
-      ${actor.mitre_id ? `<div class="stat-box"><div class="stat-num" style="font-size:18px">${actor.mitre_id}</div><div class="stat-label">${t.mitreId}</div></div>` : ''}
+      ${actor.mitre_id ? `<div class="stat-box"><div class="stat-num" style="font-size:18px">${escapeHtml(actor.mitre_id)}</div><div class="stat-label">${t.mitreId}</div></div>` : ''}
     </div>
   `
 
@@ -530,8 +542,8 @@ function renderResults(data){
       const mitLabel = mits.length === 1 ? `1 ${t.mitigations}` : `${mits.length} ${t.mitigations_pl}`
       return `
         <div class="tech-card">
-          <div class="tech-top"><span class="tech-id">${tech.mitre_id||''}</span></div>
-          <div class="tech-name">${tech.name}</div>
+          <div class="tech-top"><span class="tech-id">${escapeHtml(tech.mitre_id||'')}</span></div>
+          <div class="tech-name">${escapeHtml(tech.name)}</div>
           <div class="tech-desc">${cleanDesc2}</div>
           ${cleanUse ? `<div class="tech-use"><div class="tech-use-label">${t.howUses}</div>${cleanUse}</div>` : ''}
           ${mits.length ? `
@@ -540,7 +552,7 @@ function renderResults(data){
               ${mitLabel}
             </button>
             <div class="mitigations-body">
-              ${mits.map(m=>`<div class="mitigation-item"><div class="mit-name">${m.name}</div><div class="mit-desc">${cleanText(m.description)}</div></div>`).join('')}
+              ${mits.map(m=>`<div class="mitigation-item"><div class="mit-name">${escapeHtml(m.name)}</div><div class="mit-desc">${cleanText(m.description)}</div></div>`).join('')}
             </div>
           ` : ''}
         </div>`
@@ -549,7 +561,7 @@ function renderResults(data){
     return `<div class="tactic-section" id="tactic-${slug}">
       <div class="tactic-header" onclick="this.parentElement.classList.toggle('collapsed')">
         <div class="tactic-left">
-          <span class="tactic-idx">0${idx+1}</span>
+          <span class="tactic-idx">${String(idx+1).padStart(2,'0')}</span>
           <span class="tactic-name-el">${tactic.label}</span>
         </div>
         <div class="tactic-right">
