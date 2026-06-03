@@ -2,7 +2,6 @@
 <html lang="pt-BR" data-theme="dark" data-lang="pt">
 <head>
 <meta charset="UTF-8">
-<link rel="icon" type="image/png" href="https://i.postimg.cc/Hc6XbYLX/Chat-GPT-Image-29-de-abr-de-2026-08-48-40.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VMBLUE — TTP Mapper</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -166,7 +165,7 @@ body::before {
 .btn-export:hover { background: var(--blue-dark); }
 
 /* ── TACTIC ── */
-.tactic-section { margin-bottom: 24px; border: 1px solid var(--bd); border-radius: 6px; overflow: hidden; }
+.tactic-section { margin-bottom: 24px; border: 1px solid var(--bd); border-radius: 6px; overflow: hidden; scroll-margin-top: 72px; }
 .tactic-header { background: var(--s2); border-bottom: 1px solid var(--bd); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; transition: background 0.1s; }
 .tactic-header:hover { background: var(--s3); }
 .tactic-left { display: flex; align-items: center; gap: 12px; }
@@ -277,6 +276,7 @@ body::before {
     </div>
     <div class="killchain" id="killchain"></div>
     <div id="tacticsContainer"></div>
+    <div style="height:60vh"></div>
   </div>
 </main>
 
@@ -572,11 +572,7 @@ function scrollToTactic(slug){
   if(!el) return
   el.classList.remove('collapsed')
   requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      const rect = el.getBoundingClientRect()
-      const scrollTop = window.pageYOffset + rect.top - 70
-      window.scrollTo({ top: scrollTop, behavior: 'smooth' })
-    })
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' })
   })
 }
 
