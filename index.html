@@ -93,6 +93,11 @@ body::before {
 .stat-num { font-family: 'Barlow Condensed', sans-serif; font-size: 36px; font-weight: 800; color: var(--blue-bright); line-height: 1; margin-bottom: 4px; }
 .stat-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
 
+/* ── ATTRIBUTION CALLOUT ── */
+.attribution { background: var(--s2); border: 1px solid var(--bd); border-left: 3px solid var(--amber); border-radius: 6px; padding: 14px 18px; margin-bottom: 8px; }
+.attribution .prof-label { color: var(--amber); margin-bottom: 6px; }
+.attribution-text { font-size: 13px; color: var(--txt); line-height: 1.6; opacity: 0.92; }
+
 /* ── PROFILE ── */
 .profile { background: var(--s1); border: 1px solid var(--bd); border-radius: 6px; padding: 20px 24px; margin-bottom: 8px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px 28px; }
 .prof-item { min-width: 0; }
@@ -274,6 +279,7 @@ body::before {
 
   <div class="results" id="results">
     <div class="actor-header" id="actorHeader"></div>
+    <div class="attribution" id="attribution" style="display:none"></div>
     <div class="profile" id="profile"></div>
 
     <div class="sec-title">Dashboard de Risco <span class="sec-sub">// visão geral</span></div>
@@ -457,6 +463,7 @@ function renderResults(data){
   document.getElementById('simBtnLabel').textContent = 'Gerar simulação'
 
   renderHeader(actor, tactics, techs)
+  renderAttribution(actor)
   renderProfile(actor, techs)
   renderDashboard(actor, tactics, techs)
   renderFlow(tactics)
@@ -484,6 +491,19 @@ function renderHeader(actor, tactics, techs){
     </div>`
 }
 
+// ── ATRIBUIÇÃO & ALVOS ──
+function fmtYear(s){ if(!s) return '?'; try { return new Date(s).getFullYear() } catch(e){ return '?' } }
+function renderAttribution(actor){
+  const box = document.getElementById('attribution')
+  const clean = cleanText(actor.description)
+  if(!clean){ box.style.display='none'; return }
+  // MITRE quase sempre traz atribuição + alvos nas 1ªs frases
+  const sentences = clean.split(/(?<=\.)\s+/)
+  const snippet = sentences.slice(0, 2).join(' ')
+  box.innerHTML = `<div class="prof-label">⌖ Atribuição & Alvos</div><div class="attribution-text">${snippet}</div>`
+  box.style.display = 'block'
+}
+
 // ── PERFIL ──
 function renderProfile(actor, techs){
   const isAPT = actor.type === 'intrusion-set'
@@ -502,6 +522,11 @@ function renderProfile(actor, techs){
 
   if(actor.aliases?.length){
     items.push(`<div class="prof-item"><div class="prof-label">Aliases</div><div class="chips">${actor.aliases.map(a=>`<span class="chip">${escapeHtml(a)}</span>`).join('')}</div></div>`)
+  }
+  if(actor.campaigns?.length){
+    items.push(`<div class="prof-item"><div class="prof-label">Campanhas conhecidas</div><div class="chips">${
+      actor.campaigns.map(c=>`<span class="chip green">${escapeHtml(c.name)} <span style="opacity:.6">${fmtYear(c.first_seen)}–${fmtYear(c.last_seen)}</span></span>`).join('')
+    }</div></div>`)
   }
   items.push(`<div class="prof-item"><div class="prof-label">Registro MITRE</div><div class="prof-value" style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted)">
     Criado: ${fmtDate(actor.created)} · Atualizado: ${fmtDate(actor.modified)}</div></div>`)
