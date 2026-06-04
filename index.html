@@ -205,6 +205,14 @@ body::before {
 .det-analytic:first-of-type { border-top: none; }
 .log-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
 .log-chip { font-family: 'JetBrains Mono', monospace; font-size: 9px; padding: 2px 7px; border-radius: 4px; background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.3); color: var(--purple); }
+.sig-rule { display: flex; align-items: center; gap: 8px; padding: 7px 0; border-top: 1px dashed var(--bd); font-size: 12px; }
+.sig-rule:first-of-type { border-top: none; }
+.sig-rule a { color: var(--txt); text-decoration: none; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sig-rule a:hover { color: var(--blue-bright); }
+.sig-lvl { font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 600; padding: 2px 6px; border-radius: 3px; text-transform: uppercase; flex-shrink: 0; }
+.sig-src { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--muted); flex-shrink: 0; }
+.sig-more { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--blue-bright); text-decoration: none; display: inline-block; margin-top: 8px; }
+.sig-more:hover { text-decoration: underline; }
 .mit-item { background: rgba(16,185,129,0.05); border: 1px solid rgba(16,185,129,0.15); border-radius: 4px; padding: 9px 13px; margin-bottom: 6px; }
 .mit-name { font-size: 12px; font-weight: 600; color: var(--green); margin-bottom: 3px; }
 .mit-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
@@ -323,6 +331,8 @@ body::before {
 <script>
 // ── CONFIG ──
 const WORKER_URL = 'https://mitre-api.vmblue.workers.dev'
+// Índice Sigma (técnica -> regras). Hospede o sigma-index.json junto do HTML (mesmo site).
+const SIGMA_URL = 'sigma-index.json'
 let currentTheme = 'dark'
 
 const UI = {
@@ -377,6 +387,9 @@ const SIM_VERBS = {
 // ── ESTADO DE RENDER ──
 let TECH_INDEX = {}      // mitre_id||id -> techData
 let SIM_CACHE = null
+let SIGMA_INDEX = null   // { _meta, index: { Txxxx: [regras] } }
+let SIGMA_STATE = 'idle' // idle | loading | ready | error
+let OPEN_TECH = null     // técnica aberta no modal
 
 // ── HELPERS ──
 function escapeHtml(str){
@@ -469,6 +482,7 @@ function renderResults(data){
   renderDashboard(actor, tactics, techs)
   renderFlow(tactics)
   renderTactics(tactics)
+  ensureSigma()  // pré-carrega o índice Sigma em background
 
   hideLoading()
   document.getElementById('results').classList.add('show')
@@ -682,10 +696,47 @@ function scrollToTactic(slug){
   requestAnimationFrame(()=> el.scrollIntoView({ behavior:'smooth', block:'start' }))
 }
 
+// ── REGRAS SIGMA ──
+async function ensureSigma(){
+  if(SIGMA_STATE === 'ready' || SIGMA_STATE === 'loading') return
+  SIGMA_STATE = 'loading'
+  try {
+    const res = await fetch(SIGMA_URL)
+    if(!res.ok) throw new Error('http '+res.status)
+    SIGMA_INDEX = await res.json()
+    SIGMA_STATE = 'ready'
+  } catch(e){
+    SIGMA_STATE = 'error'
+  }
+  // se um modal estiver aberto, atualiza o bloco Sigma
+  if(OPEN_TECH){
+    const blk = document.getElementById('sigmaBlock')
+    if(blk) blk.innerHTML = `<div class="modal-block-label">🧪 Regras Sigma</div>${sigmaBlockHtml(OPEN_TECH)}`
+  }
+}
+function sigLevelColor(l){ return ({critical:'#EF4444',high:'#F59E0B',medium:'#3B82F6',low:'#10B981'})[l] || 'var(--muted)' }
+function sigmaBlockHtml(tech){
+  if(SIGMA_STATE === 'loading' || SIGMA_STATE === 'idle') return '<div class="empty-note">Carregando regras Sigma…</div>'
+  if(SIGMA_STATE === 'error') return '<div class="empty-note">Índice Sigma indisponível (verifique o sigma-index.json).</div>'
+  const id = tech.mitre_id || ''
+  const rules = (SIGMA_INDEX.index && SIGMA_INDEX.index[id]) || []
+  if(!rules.length) return '<div class="empty-note">Nenhuma regra Sigma mapeada para esta técnica.</div>'
+  const top = rules.slice(0, 12)
+  const rows = top.map(r => {
+    const src = [r.product, r.service, r.category].filter(Boolean)[0] || ''
+    const lvl = r.level ? `<span class="sig-lvl" style="background:${sigLevelColor(r.level)}22;color:${sigLevelColor(r.level)};border:1px solid ${sigLevelColor(r.level)}55">${escapeHtml(r.level)}</span>` : ''
+    return `<div class="sig-rule">${lvl}<a href="${escapeHtml(r.url)}" target="_blank" rel="noopener" title="${escapeHtml(r.title)}">${escapeHtml(r.title||'(sem título)')}</a>${src?`<span class="sig-src">${escapeHtml(src)}</span>`:''}</div>`
+  }).join('')
+  const searchUrl = `https://github.com/search?q=repo%3ASigmaHQ%2Fsigma+attack.${id.toLowerCase()}&type=code`
+  const more = rules.length > 12 ? `<a class="sig-more" href="${searchUrl}" target="_blank" rel="noopener">↗ ver todas as ${rules.length} regras no SigmaHQ</a>` : `<a class="sig-more" href="${searchUrl}" target="_blank" rel="noopener">↗ abrir no SigmaHQ</a>`
+  return rows + more
+}
+
 // ── MODAL DE DETALHE ──
 function openModal(key){
   const tech = TECH_INDEX[key]
   if(!tech) return
+  OPEN_TECH = tech
   const platforms = (tech.platforms||[]).map(p=>`<span class="chip blue">${escapeHtml(p)}</span>`).join('')
   const tools = (tech.tools||[]).map(t=>`<span class="chip red">${escapeHtml(t)}</span>`).join('')
 
@@ -729,6 +780,7 @@ function openModal(key){
       ${cleanText(tech.use)?`<div class="modal-block"><div class="modal-block-label">Como o grupo utiliza</div><div class="use-box modal-text">${cleanText(tech.use)}</div></div>`:''}
       ${tools?`<div class="modal-block"><div class="modal-block-label">🧰 Ferramentas associadas</div><div class="chips">${tools}</div></div>`:''}
       <div class="modal-block"><div class="modal-block-label">🔍 Detecção & Logs</div>${detHtml}</div>
+      <div class="modal-block" id="sigmaBlock"><div class="modal-block-label">🧪 Regras Sigma</div>${sigmaBlockHtml(tech)}</div>
       <div class="modal-block"><div class="modal-block-label">🛡 Mitigações</div>${mitHtml}</div>
       ${attackUrl?`<div class="modal-block"><a href="${attackUrl}" target="_blank" rel="noopener" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--blue-bright);text-decoration:none">↗ Ver no MITRE ATT&CK</a></div>`:''}
     </div>`
@@ -736,6 +788,7 @@ function openModal(key){
   document.body.style.overflow = 'hidden'
 }
 function closeModal(){
+  OPEN_TECH = null
   document.getElementById('modal').classList.remove('show')
   document.body.style.overflow = ''
 }
