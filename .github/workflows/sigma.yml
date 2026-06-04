@@ -1,0 +1,52 @@
+name: Atualizar índice Sigma
+
+on:
+  schedule:
+    - cron: '0 6 1 * *'   # dia 1 de cada mês. (semanal seria: '0 6 * * 1')
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-sigma
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Instalar dependências
+        run: pip install pyyaml
+
+      - name: Baixar e extrair o SigmaHQ
+        run: |
+          curl -sL -o sigma.tar.gz "https://codeload.github.com/SigmaHQ/sigma/tar.gz/refs/heads/master"
+          mkdir -p sigma
+          tar xzf sigma.tar.gz -C sigma
+
+      - name: Gerar o índice
+        run: |
+          python build_sigma_index.py sigma/sigma-master sigma-index.json
+          rm -rf sigma sigma.tar.gz
+
+      - name: Commitar se houve mudança
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add sigma-index.json
+          if git diff --staged --quiet; then
+            echo "Índice Sigma sem mudanças — nada a commitar."
+          else
+            git commit -m "chore: atualiza índice Sigma (automático)"
+            git push
+            echo "Índice Sigma atualizado e enviado."
+          fi
