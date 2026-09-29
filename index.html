@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="pt-BR" data-theme="dark">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<link rel="icon" type="image/png" href="https://i.postimg.cc/Hc6XbYLX/Chat-GPT-Image-29-de-abr-de-2026-08-48-40.png">
+<link rel="icon" type="image/jpeg" href="https://i.postimg.cc/dDh0pbK1/favicon.jpg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VMBLUE — TTP Mapper</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -523,7 +523,7 @@ function renderResults(data){
         ${tac.techniques.map(tech => `
           <div class="tech-card" onclick="openModal('${techKey(tech)}')">
             <div class="tech-top">
-              <span class="tech-id">${escapeHtml(tech.mitre_id \vert{}\vert{} tech.id)}</span>${tech.is_subtechnique ? '<span class="tech-sub">SUB</span>' : ''}
+              <span class="tech-id">${escapeHtml(tech.mitre_id || tech.id)}</span>${tech.is_subtechnique ? '<span class="tech-sub">SUB</span>' : ''}
             </div>
             <div class="tech-name">${escapeHtml(tech.name)}</div>
             <div class="tech-desc">${cleanText(tech.description)}</div>
